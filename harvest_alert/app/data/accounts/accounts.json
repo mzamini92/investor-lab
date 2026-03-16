@@ -1,0 +1,16 @@
+[
+  {
+    "account_id": "taxable_main",
+    "account_name": "Main Taxable Brokerage",
+    "account_type": "taxable_brokerage",
+    "taxable_flag": true,
+    "owner_id": "user_main"
+  },
+  {
+    "account_id": "ira_main",
+    "account_name": "Traditional IRA",
+    "account_type": "ira",
+    "taxable_flag": false,
+    "owner_id": "user_main"
+  }
+]

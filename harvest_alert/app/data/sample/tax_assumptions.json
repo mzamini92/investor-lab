@@ -1,0 +1,13 @@
+{
+  "federal_short_term_rate": 0.37,
+  "federal_long_term_rate": 0.20,
+  "state_tax_rate": 0.05,
+  "marginal_income_tax_rate": 0.37,
+  "default_loss_benefit_rate": 0.25,
+  "minimum_loss_dollar_threshold": 250.0,
+  "minimum_tax_savings_threshold": 75.0,
+  "trading_cost_bps": 2.0,
+  "bid_ask_cost_bps": 3.0,
+  "slippage_bps": 2.0,
+  "holding_period_days_for_replacement": 31
+}

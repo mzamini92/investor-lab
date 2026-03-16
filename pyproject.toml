@@ -28,7 +28,7 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["etf_overlap*", "global_etf_exposure_map*", "economic_dependency_heatmap*", "economic_regime_translator*", "hedgefund_dependency_engine*", "earnings_clarity*", "true_cost_of_investing*", "value_check*", "moat_watch*", "etf_ingest*", "etf_catalog*"]
+include = ["etf_overlap*", "global_etf_exposure_map*", "economic_dependency_heatmap*", "economic_regime_translator*", "hedgefund_dependency_engine*", "earnings_clarity*", "true_cost_of_investing*", "value_check*", "moat_watch*", "harvest_alert*", "etf_ingest*", "etf_catalog*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

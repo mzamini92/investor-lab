@@ -7,6 +7,7 @@ Production-style Python project for analyzing ETF portfolios with:
 - economic dependency heatmaps, macro-driver concentration, and scenario sensitivity analysis
 - single-ticker and ETF valuation context versus history and peers
 - quarterly moat-health tracking for competitive advantage monitoring
+- taxable-account tax-loss harvesting alerts with replacement ETF suggestions
 - FastAPI endpoints, CLI tools, and a Streamlit dashboard
 
 ## Features
@@ -18,6 +19,7 @@ Production-style Python project for analyzing ETF portfolios with:
 - Economic dependency heatmaps, macro dependency ranking, and shock scenarios
 - Valuation context checks for stocks and ETFs versus history, peers, and Treasury yield
 - Moat-health tracking across margins, ROIC spread, pricing power, share trends, and management commentary
+- Tax-loss harvesting scans with wash-sale screening, replacement matching, and net-benefit estimates
 - Hidden concentration score, diversification score, and redundancy index
 - Global Dependence Score and Economic Reality Gap
 - Economic Reality Gap, Global Diversification Score, and Macro Dependence Score
@@ -102,7 +104,7 @@ Run:
 streamlit run streamlit_app.py
 ```
 
-The dashboard has nine tabs:
+The dashboard has ten tabs:
 
 - `Overlap Detector`: analyzes duplication, concentration, overlap matrix, and warnings
 - `Global Exposure Map`: analyzes country, region, currency, market-cap, and revenue exposure with choropleth-ready charts
@@ -113,6 +115,7 @@ The dashboard has nine tabs:
 - `Economic Regime Translator`: turns macro snapshots into a plain-English regime label, scorecard, historical analogs, transition analysis, and portfolio implication summary
 - `ValueCheck`: checks whether a stock or ETF looks cheap, fair, or expensive versus its own history and sector or ETF peers, with a plain-English long-term-holder interpretation
 - `MoatWatch`: tracks whether competitive advantage signals are strengthening or eroding quarter to quarter, with moat-health colors, trend alerts, and peer-relative context
+- `HarvestAlert`: scans taxable positions for meaningful tax-loss harvesting opportunities, checks likely wash-sale conflicts, and precomputes similar replacement ETFs
 
 You can either:
 
@@ -128,6 +131,7 @@ The `True Cost of Investing` tab supports current-portfolio analysis, side-by-si
 The `Economic Regime Translator` tab supports current-snapshot classification, prior-snapshot comparison, historical analog matching, and exportable macro regime summaries.
 The `ValueCheck` tab supports ticker-level valuation checks, verdict cards, own-history percentile views, peer comparison charts, and markdown/JSON exports.
 The `MoatWatch` tab supports single-company moat analysis, watchlist-quarter digests, moat score history, signal radar charts, peer comparison, and alert/watch-item summaries.
+The `HarvestAlert` tab supports sample or uploaded brokerage data, ranked harvest candidates, wash-sale conflict reporting, replacement-ETF similarity views, and markdown/JSON exports.
 
 Then click analyze and review the charts, tables, warnings, recommendations, summary cards, and downloadable HTML chart exports.
 

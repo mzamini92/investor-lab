@@ -85,6 +85,28 @@ from true_cost_of_investing.app.services.visualization import (
     plot_gross_vs_net_timeline as plot_cost_gross_vs_net_timeline,
     plot_stacked_cost_breakdown as plot_cost_stacked_cost_breakdown,
 )
+from harvest_alert.app.config import (
+    ACCOUNTS_FILE as HARVEST_ACCOUNTS_FILE,
+    LOTS_FILE as HARVEST_LOTS_FILE,
+    POSITIONS_FILE as HARVEST_POSITIONS_FILE,
+    REPLACEMENTS_FILE as HARVEST_REPLACEMENTS_FILE,
+    TAX_ASSUMPTIONS_FILE as HARVEST_TAX_ASSUMPTIONS_FILE,
+    TRANSACTIONS_FILE as HARVEST_TRANSACTIONS_FILE,
+)
+from harvest_alert.app.models import Account as HarvestAccount
+from harvest_alert.app.models import Position as HarvestPosition
+from harvest_alert.app.models import ReplacementSecurity as HarvestReplacementSecurity
+from harvest_alert.app.models import TaxAssumptions as HarvestTaxAssumptions
+from harvest_alert.app.models import TaxLot as HarvestTaxLot
+from harvest_alert.app.models import Transaction as HarvestTransaction
+from harvest_alert.app.providers.brokerage_provider import LocalBrokerageProvider
+from harvest_alert.app.services.analyzer import HarvestAlertAnalyzer
+from harvest_alert.app.services.reporting import build_markdown_report as build_harvest_markdown_report
+from harvest_alert.app.services.visualization import (
+    plot_losses as plot_harvest_losses,
+    plot_similarity as plot_harvest_similarity,
+    plot_tax_savings as plot_harvest_tax_savings,
+)
 from moat_watch.app.config import DEFAULT_QUARTER as DEFAULT_MOAT_QUARTER
 from moat_watch.app.config import WATCHLIST_FILE as DEFAULT_MOAT_WATCHLIST_FILE
 from moat_watch.app.models import WatchlistItem as MoatWatchItem
@@ -771,6 +793,79 @@ def _render_moatwatch_summary_cards(result: dict[str, Any]) -> None:
         )
 
 
+def _render_harvest_viral_card(result: dict[str, Any]) -> None:
+    top = result["plain_english_summary"].get("top_opportunity")
+    if not top:
+        st.markdown(
+            """
+            <div class="viral-card">
+                <div class="viral-kicker">HarvestAlert</div>
+                <div class="viral-title">No worthwhile tax-loss harvesting alert is currently clearing your thresholds.</div>
+                <div class="viral-copy">
+                    The supplied taxable positions either are not at losses, are too small to matter after friction, or do not have a clean replacement candidate.
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+    replacement = top.get("recommended_replacement") or {}
+    st.markdown(
+        f"""
+        <div class="viral-card">
+            <div class="viral-kicker">HarvestAlert</div>
+            <div class="viral-title">{top['ticker']} is the top harvest opportunity right now.</div>
+            <div class="viral-copy">
+                Estimated tax savings: <strong>${float(top['estimated_tax_savings']):,.0f}</strong>.
+                Net benefit after trading friction: <strong>${float(top['net_estimated_benefit']):,.0f}</strong>.
+                Replacement: <strong>{replacement.get('ticker', 'No clean replacement')}</strong>.
+                Wash-sale risk: <strong>{str(top['wash_sale_risk_level']).title()}</strong>.
+                <br><br>
+                {top['alert_text']}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_harvest_summary_cards(result: dict[str, Any]) -> None:
+    cards = [
+        (
+            "Total Tax Savings",
+            f"${float(result['estimated_total_tax_savings']):,.0f}",
+            "Estimated gross tax value across the ranked harvest candidates.",
+        ),
+        (
+            "Net Benefit",
+            f"${float(result['estimated_total_net_benefit']):,.0f}",
+            "Estimated tax value after modeled trading friction.",
+        ),
+        (
+            "Opportunities",
+            str(len(result["opportunities"])),
+            "Harvest candidates that cleared the configured thresholds.",
+        ),
+        (
+            "High-Risk Cases",
+            str(sum(1 for row in result["opportunities"] if row["wash_sale_risk_level"] == "high")),
+            "Candidates that still look interesting economically but need extra wash-sale caution.",
+        ),
+    ]
+    columns = st.columns(4)
+    for column, (label, value, copy) in zip(columns, cards):
+        column.markdown(
+            f"""
+            <div class="summary-card">
+                <div class="summary-label">{label}</div>
+                <div class="summary-value">{value}</div>
+                <div class="summary-copy">{copy}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
 def _figure_download_button(label: str, figure: go.Figure, file_name: str, key: str) -> None:
     html = figure.to_html(include_plotlyjs="cdn", full_html=True)
     st.download_button(
@@ -882,6 +977,8 @@ earnings_companies = sorted({event.ticker for event in earnings_events})
 earnings_quarters = sorted({event.quarter for event in earnings_events}, reverse=True)
 true_cost_analyzer = TrueCostAnalyzer()
 regime_analyzer = EconomicRegimeAnalyzer()
+harvest_provider = LocalBrokerageProvider()
+harvest_analyzer = HarvestAlertAnalyzer(harvest_provider)
 moatwatch_analyzer = MoatWatchAnalyzer()
 moatwatch_provider = LocalMoatProvider()
 moatwatch_supported = moatwatch_provider.supported_tickers()
@@ -911,7 +1008,7 @@ with st.sidebar:
     )
     st.write("Best for screenshots: run the dependency or investing-cost tabs after selecting a sample portfolio.")
 
-overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_tab, valuecheck_tab, moatwatch_tab = st.tabs(
+overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_tab, valuecheck_tab, moatwatch_tab, harvest_tab = st.tabs(
     [
         "Overlap Detector",
         "Global Exposure Map",
@@ -922,6 +1019,7 @@ overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_
         "Economic Regime Translator",
         "ValueCheck",
         "MoatWatch",
+        "HarvestAlert",
     ]
 )
 
@@ -2223,3 +2321,139 @@ with moatwatch_tab:
                     ).sort_values("moat_health_score", ascending=False),
                     use_container_width=True,
                 )
+
+with harvest_tab:
+    st.subheader("HarvestAlert")
+    st.caption("Scan taxable-account losses, estimate tax value after friction, and pair each candidate with a similar temporary replacement ETF.")
+    harvest_mode = st.radio(
+        "Mode",
+        options=["Sample scan", "Upload JSON inputs"],
+        horizontal=True,
+        key="harvest_mode",
+    )
+    scan_date = st.text_input("Scan date", value="2026-03-15", key="harvest_scan_date")
+
+    sample_accounts = Path(HARVEST_ACCOUNTS_FILE).read_text(encoding="utf-8")
+    sample_positions = Path(HARVEST_POSITIONS_FILE).read_text(encoding="utf-8")
+    sample_lots = Path(HARVEST_LOTS_FILE).read_text(encoding="utf-8")
+    sample_transactions = Path(HARVEST_TRANSACTIONS_FILE).read_text(encoding="utf-8")
+    sample_assumptions = Path(HARVEST_TAX_ASSUMPTIONS_FILE).read_text(encoding="utf-8")
+    sample_replacements = Path(HARVEST_REPLACEMENTS_FILE).read_text(encoding="utf-8")
+
+    upload_accounts = _json_upload_widget("Upload accounts JSON", "harvest_accounts", "Upload brokerage account JSON.")
+    upload_positions = _json_upload_widget("Upload positions JSON", "harvest_positions", "Upload current position JSON.")
+    upload_lots = _json_upload_widget("Upload tax lots JSON", "harvest_lots", "Upload lot-level cost basis JSON.")
+    upload_transactions = _json_upload_widget("Upload transactions JSON", "harvest_transactions", "Upload transaction history JSON.")
+    upload_assumptions = _json_upload_widget("Upload tax assumptions JSON", "harvest_assumptions", "Upload tax assumptions JSON.")
+    upload_replacements = _json_upload_widget("Upload replacements JSON", "harvest_replacements", "Upload replacement ETF universe JSON.")
+
+    with st.form("harvest_form"):
+        if harvest_mode == "Upload JSON inputs":
+            accounts_text = st.text_area("Accounts JSON", value=upload_accounts or sample_accounts, height=140)
+            positions_text = st.text_area("Positions JSON", value=upload_positions or sample_positions, height=180)
+            lots_text = st.text_area("Lots JSON", value=upload_lots or sample_lots, height=180)
+            transactions_text = st.text_area("Transactions JSON", value=upload_transactions or sample_transactions, height=180)
+            assumptions_text = st.text_area("Tax assumptions JSON", value=upload_assumptions or sample_assumptions, height=180)
+            replacements_text = st.text_area("Replacement universe JSON", value=upload_replacements or sample_replacements, height=180)
+        else:
+            accounts_text = sample_accounts
+            positions_text = sample_positions
+            lots_text = sample_lots
+            transactions_text = sample_transactions
+            assumptions_text = sample_assumptions
+            replacements_text = sample_replacements
+            st.caption("Using the bundled HarvestAlert sample dataset.")
+        harvest_submit = st.form_submit_button("Scan Harvest Opportunities")
+
+    if harvest_submit:
+        try:
+            harvest_result = harvest_analyzer.scan(
+                accounts=[HarvestAccount(**item) for item in json.loads(accounts_text)],
+                positions=[HarvestPosition(**item) for item in json.loads(positions_text)],
+                lots=[HarvestTaxLot(**item) for item in json.loads(lots_text)],
+                transactions=[HarvestTransaction(**item) for item in json.loads(transactions_text)],
+                tax_assumptions=HarvestTaxAssumptions(**json.loads(assumptions_text)),
+                replacement_universe=[HarvestReplacementSecurity(**item) for item in json.loads(replacements_text)],
+                scan_date=scan_date,
+            ).to_dict()
+        except Exception as exc:  # noqa: BLE001
+            st.error(f"Unable to run HarvestAlert: {exc}")
+        else:
+            _render_harvest_viral_card(harvest_result)
+            _render_harvest_summary_cards(harvest_result)
+
+            losses_figure = plot_harvest_losses(harvest_result["opportunities"])
+            savings_figure = plot_harvest_tax_savings(harvest_result["opportunities"])
+            similarity_figure = plot_harvest_similarity(harvest_result["opportunities"])
+
+            st.markdown('<div class="section-kicker">Shareable Exports</div>', unsafe_allow_html=True)
+            export_col1, export_col2, export_col3 = st.columns(3)
+            with export_col1:
+                _result_download_buttons(
+                    harvest_result,
+                    {
+                        "harvest_losses": losses_figure,
+                        "harvest_tax_savings": savings_figure,
+                    },
+                    "harvest_alert",
+                )
+            with export_col2:
+                _figure_download_button(
+                    "Download similarity chart",
+                    similarity_figure,
+                    "harvest_alert_similarity.html",
+                    "harvest_similarity_export",
+                )
+                st.download_button(
+                    "Download markdown summary",
+                    data=build_harvest_markdown_report(harvest_result),
+                    file_name="harvest_alert_summary.md",
+                    mime="text/markdown",
+                    key="harvest_markdown_export",
+                )
+            with export_col3:
+                st.download_button(
+                    "Download full HarvestAlert JSON",
+                    data=json.dumps(harvest_result, indent=2),
+                    file_name="harvest_alert_analysis.json",
+                    mime="application/json",
+                    key="harvest_json_export",
+                )
+
+            chart_col1, chart_col2 = st.columns(2)
+            with chart_col1:
+                st.plotly_chart(losses_figure, use_container_width=True)
+            with chart_col2:
+                st.plotly_chart(savings_figure, use_container_width=True)
+            st.plotly_chart(similarity_figure, use_container_width=True)
+
+            st.subheader("Plain-English Summary")
+            st.write(harvest_result["plain_english_summary"]["summary_paragraph"])
+            for item in harvest_result["plain_english_summary"]["what_to_verify"]:
+                st.write(f"- {item}")
+
+            explain_col1, explain_col2 = st.columns(2)
+            with explain_col1:
+                st.subheader("Data Completeness Flags")
+                if harvest_result["data_completeness_flags"]:
+                    for item in harvest_result["data_completeness_flags"]:
+                        st.write(f"- {item}")
+                else:
+                    st.success("No major data-completeness gaps were detected in the sample input.")
+                st.subheader("Disclaimers")
+                for item in harvest_result["disclaimers"]:
+                    st.write(f"- {item}")
+            with explain_col2:
+                st.subheader("Wash-Sale Conflicts")
+                if harvest_result["wash_sale_conflicts"]:
+                    st.dataframe(pd.DataFrame(harvest_result["wash_sale_conflicts"]), use_container_width=True)
+                else:
+                    st.success("No explicit wash-sale conflicts were detected in the supplied data.")
+
+            harvest_tabs = st.tabs(["Opportunities", "No-Action Cases", "Replacements"])
+            with harvest_tabs[0]:
+                st.dataframe(pd.DataFrame(harvest_result["opportunities"]), use_container_width=True)
+            with harvest_tabs[1]:
+                st.dataframe(pd.DataFrame(harvest_result["no_action_positions"]), use_container_width=True)
+            with harvest_tabs[2]:
+                st.dataframe(pd.DataFrame(harvest_result["replacement_recommendations"]), use_container_width=True)

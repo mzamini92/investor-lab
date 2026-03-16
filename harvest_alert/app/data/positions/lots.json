@@ -1,0 +1,74 @@
+[
+  {
+    "account_id": "taxable_main",
+    "ticker": "VEA",
+    "lot_id": "vea_lot_1",
+    "acquisition_date": "2024-02-15",
+    "quantity": 100,
+    "cost_basis_per_share": 54.2,
+    "total_cost_basis": 5420.0,
+    "current_price": 45.0,
+    "unrealized_gain_loss": -920.0,
+    "short_term_or_long_term": "long_term"
+  },
+  {
+    "account_id": "taxable_main",
+    "ticker": "VXF",
+    "lot_id": "vxf_lot_gain",
+    "acquisition_date": "2025-10-01",
+    "quantity": 30,
+    "cost_basis_per_share": 116.0,
+    "total_cost_basis": 3480.0,
+    "current_price": 121.0,
+    "unrealized_gain_loss": 150.0,
+    "short_term_or_long_term": "short_term"
+  },
+  {
+    "account_id": "taxable_main",
+    "ticker": "VXF",
+    "lot_id": "vxf_lot_loss",
+    "acquisition_date": "2024-08-20",
+    "quantity": 50,
+    "cost_basis_per_share": 140.6,
+    "total_cost_basis": 7030.0,
+    "current_price": 121.0,
+    "unrealized_gain_loss": -980.0,
+    "short_term_or_long_term": "long_term"
+  },
+  {
+    "account_id": "taxable_main",
+    "ticker": "VXUS",
+    "lot_id": "vxus_lot_1",
+    "acquisition_date": "2025-01-10",
+    "quantity": 50,
+    "cost_basis_per_share": 58.2,
+    "total_cost_basis": 2910.0,
+    "current_price": 56.0,
+    "unrealized_gain_loss": -110.0,
+    "short_term_or_long_term": "long_term"
+  },
+  {
+    "account_id": "taxable_main",
+    "ticker": "QQQ",
+    "lot_id": "qqq_lot_1",
+    "acquisition_date": "2024-09-01",
+    "quantity": 20,
+    "cost_basis_per_share": 480.0,
+    "total_cost_basis": 9600.0,
+    "current_price": 420.0,
+    "unrealized_gain_loss": -1200.0,
+    "short_term_or_long_term": "long_term"
+  },
+  {
+    "account_id": "taxable_main",
+    "ticker": "ARKK",
+    "lot_id": "arkk_lot_1",
+    "acquisition_date": "2024-06-20",
+    "quantity": 60,
+    "cost_basis_per_share": 53.0,
+    "total_cost_basis": 3180.0,
+    "current_price": 44.0,
+    "unrealized_gain_loss": -540.0,
+    "short_term_or_long_term": "long_term"
+  }
+]

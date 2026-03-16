@@ -1,0 +1,62 @@
+[
+  {
+    "account_id": "taxable_main",
+    "trade_date": "2026-01-20",
+    "ticker": "VEA",
+    "transaction_type": "buy",
+    "quantity": 100,
+    "price": 54.2,
+    "amount": 5420.0,
+    "side": "buy",
+    "security_name": "Vanguard FTSE Developed Markets ETF",
+    "recurring_flag": false
+  },
+  {
+    "account_id": "taxable_main",
+    "trade_date": "2026-02-20",
+    "ticker": "VXUS",
+    "transaction_type": "drip",
+    "quantity": 0.8,
+    "price": 56.8,
+    "amount": 45.44,
+    "side": "buy",
+    "security_name": "Vanguard Total International Stock ETF",
+    "recurring_flag": true
+  },
+  {
+    "account_id": "ira_main",
+    "trade_date": "2026-03-01",
+    "ticker": "QQQ",
+    "transaction_type": "buy",
+    "quantity": 2,
+    "price": 435.0,
+    "amount": 870.0,
+    "side": "buy",
+    "security_name": "Invesco QQQ Trust",
+    "recurring_flag": false
+  },
+  {
+    "account_id": "ira_main",
+    "trade_date": "2026-03-25",
+    "ticker": "QQQ",
+    "transaction_type": "recurring_buy",
+    "quantity": 1,
+    "price": 0.0,
+    "amount": 0.0,
+    "side": "buy",
+    "security_name": "Invesco QQQ Trust",
+    "recurring_flag": true
+  },
+  {
+    "account_id": "taxable_main",
+    "trade_date": "2026-03-10",
+    "ticker": "VTI",
+    "transaction_type": "buy",
+    "quantity": 5,
+    "price": 265.0,
+    "amount": 1325.0,
+    "side": "buy",
+    "security_name": "Vanguard Total Stock Market ETF",
+    "recurring_flag": false
+  }
+]
