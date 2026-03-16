@@ -1,180 +1,167 @@
 # ETF Analytics Platform
 
-Production-style Python project for analyzing ETF portfolios with:
+This repository is a multi-product fintech analytics workspace built around a shared Streamlit dashboard and a set of standalone Python MVPs.
 
-- hidden overlap, concentration, and false diversification detection
-- global country, region, currency, sector, and revenue-geography exposure mapping
-- economic dependency heatmaps, macro-driver concentration, and scenario sensitivity analysis
-- single-ticker and ETF valuation context versus history and peers
-- quarterly moat-health tracking for competitive advantage monitoring
-- taxable-account tax-loss harvesting alerts with replacement ETF suggestions
-- FastAPI endpoints, CLI tools, and a Streamlit dashboard
+It started as an ETF overlap tool and now includes a broader suite for:
 
-## Features
+- ETF overlap and false-diversification detection
+- global exposure mapping
+- economic dependency and macro-driver analysis
+- earnings-call clarity summaries
+- long-horizon investing cost analysis
+- macro regime translation
+- valuation context
+- moat-health tracking
+- tax-loss harvesting alerts
 
-- Portfolio look-through analysis across ETF holdings
-- Company, sector, country, and style exposure aggregation
-- ETF-to-ETF overlap matrix with multiple overlap metrics
-- Global country, region, currency, market-cap, and revenue exposure mapping
-- Economic dependency heatmaps, macro dependency ranking, and shock scenarios
-- Valuation context checks for stocks and ETFs versus history, peers, and Treasury yield
-- Moat-health tracking across margins, ROIC spread, pricing power, share trends, and management commentary
-- Tax-loss harvesting scans with wash-sale screening, replacement matching, and net-benefit estimates
-- Hidden concentration score, diversification score, and redundancy index
-- Global Dependence Score and Economic Reality Gap
-- Economic Reality Gap, Global Diversification Score, and Macro Dependence Score
-- Magnificent 7 exposure tracking
-- Rule-based warnings and portfolio improvement suggestions
-- FastAPI service and local CLI
-- Streamlit dashboard plus Plotly and NetworkX visualization helpers
-- Unit tests for core analytics
+The shared app is designed to make these tools usable together, while each feature also ships as its own standalone Python package with its own CLI, API, tests, and README.
 
-## Quickstart
+## What Lives Here
+
+- Shared dashboard: [streamlit_app.py](/Users/uw-user/Desktop/start/streamlit_app.py)
+- Shared entry point: [main.py](/Users/uw-user/Desktop/start/main.py)
+- Shared package config: [pyproject.toml](/Users/uw-user/Desktop/start/pyproject.toml)
+- Core ETF overlap API package: [etf_overlap](/Users/uw-user/Desktop/start/etf_overlap)
+- Shared sample holdings data: [data](/Users/uw-user/Desktop/start/data)
+
+## Feature Docs
+
+Each major feature has its own markdown documentation:
+
+- Global ETF Exposure Map: [global_etf_exposure_map/README.md](/Users/uw-user/Desktop/start/global_etf_exposure_map/README.md)
+- ETF Overlap / core platform: this root guide, [README.md](/Users/uw-user/Desktop/start/README.md)
+- Economic Dependency Heatmap: [economic_dependency_heatmap/README.md](/Users/uw-user/Desktop/start/economic_dependency_heatmap/README.md)
+- Hedgefund Dependency Engine: [hedgefund_dependency_engine/README.md](/Users/uw-user/Desktop/start/hedgefund_dependency_engine/README.md)
+- EarningsClarity: [earnings_clarity/README.md](/Users/uw-user/Desktop/start/earnings_clarity/README.md)
+- True Cost of Investing: [true_cost_of_investing/README.md](/Users/uw-user/Desktop/start/true_cost_of_investing/README.md)
+- Economic Regime Translator: [economic_regime_translator/README.md](/Users/uw-user/Desktop/start/economic_regime_translator/README.md)
+- ValueCheck: [value_check/README.md](/Users/uw-user/Desktop/start/value_check/README.md)
+- MoatWatch: [moat_watch/README.md](/Users/uw-user/Desktop/start/moat_watch/README.md)
+- HarvestAlert: [harvest_alert/README.md](/Users/uw-user/Desktop/start/harvest_alert/README.md)
+
+## Shared Dashboard
+
+Run the unified app from the repository root:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install '.[dev]'
-python main.py --portfolio sample_portfolio.json --pretty
+streamlit run streamlit_app.py
+```
+
+The dashboard currently includes ten tabs:
+
+1. `Overlap Detector`
+2. `Global Exposure Map`
+3. `Economic Dependency Heatmap`
+4. `Hedgefund Dependency Engine`
+5. `EarningsClarity`
+6. `True Cost of Investing`
+7. `Economic Regime Translator`
+8. `ValueCheck`
+9. `MoatWatch`
+10. `HarvestAlert`
+
+The app supports sample-mode workflows plus JSON upload or paste flows for the feature areas that use user-provided inputs.
+
+## Quickstart
+
+From the repo root:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install '.[dev]'
 pytest
 uvicorn etf_overlap.api:app --reload
 streamlit run streamlit_app.py
 ```
 
-## API
-
-- `GET /health`
-- `GET /sample-portfolio`
-- `GET /catalog-etfs`
-- `POST /analyze-portfolio`
-- `GET /sample-global-portfolio`
-- `GET /supported-global-etfs`
-- `GET /sample-map-data`
-- `POST /analyze-global-exposure`
-- `GET /sample-dependency-portfolio`
-- `GET /supported-dependency-etfs`
-- `GET /sample-scenarios`
-- `GET /sample-dependency-heatmap`
-- `GET /sample-dependency-map-data`
-- `POST /analyze-dependencies`
-- `GET /hedgefund-live-news-headlines`
-- `GET /hedgefund-live-news-suggestions`
-
-Example request body:
-
-```json
-{
-  "positions": [
-    {"ticker": "VTI", "amount": 2000},
-    {"ticker": "VOO", "amount": 1500},
-    {"ticker": "QQQ", "amount": 1000},
-    {"ticker": "ARKK", "amount": 500}
-  ]
-}
-```
-
-## Data Providers
-
-The project abstracts ETF holdings behind provider interfaces so you can swap in:
-
-- Local CSV holdings files
-- Mock providers for tests and development
-- Future live ETF holdings APIs
-
-The default app uses CSV files in `data/holdings/`.
-
-Global exposure datasets live in `global_etf_exposure_map/app/data/etf_holdings/`.
-
-Current locally supported ETF dataset:
-
-- `VTI`
-- `VOO`
-- `QQQ`
-- `ARKK`
-- `VXUS`
-- `EEM`
-- `IXUS`
-- `SCHD`
-
-## Streamlit
-
-Run:
+For the original ETF overlap CLI:
 
 ```bash
-streamlit run streamlit_app.py
+python main.py --portfolio sample_portfolio.json --pretty
 ```
 
-The dashboard has ten tabs:
+## Shared API
 
-- `Overlap Detector`: analyzes duplication, concentration, overlap matrix, and warnings
-- `Global Exposure Map`: analyzes country, region, currency, market-cap, and revenue exposure with choropleth-ready charts
-- `Economic Dependency Heatmap`: analyzes hidden macro drivers, revenue demand centers, dependency scenarios, and a portfolio dependency network
-- `Hedgefund Dependency Engine`: adds deeper look-through propagation, factor/theme loading, scenario shock transmission, overlap metrics, and graph centrality concentration analysis
-- `EarningsClarity`: turns quarterly earnings calls into a plain-English 5-point summary for long-term holders, with tone shift detection, watch items, evidence snippets, and portfolio-quarter coverage for supported companies
-- `True Cost of Investing`: estimates the long-term dollar cost of fees, tax drag, spreads, turnover, advisory fees, cash drag, and other portfolio frictions, with current-vs-optimized comparisons
-- `Economic Regime Translator`: turns macro snapshots into a plain-English regime label, scorecard, historical analogs, transition analysis, and portfolio implication summary
-- `ValueCheck`: checks whether a stock or ETF looks cheap, fair, or expensive versus its own history and sector or ETF peers, with a plain-English long-term-holder interpretation
-- `MoatWatch`: tracks whether competitive advantage signals are strengthening or eroding quarter to quarter, with moat-health colors, trend alerts, and peer-relative context
-- `HarvestAlert`: scans taxable positions for meaningful tax-loss harvesting opportunities, checks likely wash-sale conflicts, and precomputes similar replacement ETFs
-
-You can either:
-
-- use the quick picker to choose ETFs and amounts, with each selected ETF defaulting to `1000`
-- upload a portfolio JSON file
-- paste a portfolio JSON array manually
-
-For the dependency tabs, you can also filter the scenario set before running the analysis.
-The hedgefund tab also supports dynamic event overlays like war, pandemic, tariff escalation, and shipping disruption, plus free-text headline context that auto-matches event templates by keyword.
-It now includes live-news ingestion, auto-refresh controls, and a `Top 5 Live Risks Today` card strip driven by current headlines.
-The `EarningsClarity` tab supports both single-company review and portfolio-quarter review, plus holdings JSON upload for the supported sample companies.
-The `True Cost of Investing` tab supports current-portfolio analysis, side-by-side comparison against a lower-cost alternative, assumptions uploads, downloadable chart exports, and long-horizon wealth-loss visuals.
-The `Economic Regime Translator` tab supports current-snapshot classification, prior-snapshot comparison, historical analog matching, and exportable macro regime summaries.
-The `ValueCheck` tab supports ticker-level valuation checks, verdict cards, own-history percentile views, peer comparison charts, and markdown/JSON exports.
-The `MoatWatch` tab supports single-company moat analysis, watchlist-quarter digests, moat score history, signal radar charts, peer comparison, and alert/watch-item summaries.
-The `HarvestAlert` tab supports sample or uploaded brokerage data, ranked harvest candidates, wash-sale conflict reporting, replacement-ETF similarity views, and markdown/JSON exports.
-
-Then click analyze and review the charts, tables, warnings, recommendations, summary cards, and downloadable HTML chart exports.
-
-## Bulk ETF Import
-
-You can import many more ETFs from a standardized raw holdings CSV and generate both local datasets automatically:
+The root FastAPI app is still exposed through:
 
 ```bash
-python ingest_etf_holdings.py --source-csv ingestion_samples/bulk_holdings_template.csv --target both --pretty
+uvicorn etf_overlap.api:app --reload
 ```
 
-This will create:
+That shared API includes the overlap engine plus unified endpoints for the additional platform features that have been wired into the main service over time.
 
-- overlap holdings files in `data/holdings/`
-- global exposure holdings files in `global_etf_exposure_map/app/data/etf_holdings/`
+## Standalone Products
 
-Expected raw CSV columns:
+Each feature package can also be run independently. Examples:
 
-- required: `etf_ticker`, `underlying_ticker`, `company_name`, `holding_weight`, `sector`
-- optional but recommended: `country_domicile`, `country_code`, `region`, `currency`, `market_cap`, `market_cap_bucket`, `style_box`, `label_region`, `label_focus`
-- optional revenue fields: `revenue_north_america`, `revenue_europe`, `revenue_asia_pacific`, `revenue_emerging_markets`, `revenue_latin_america`, `revenue_middle_east_africa`
+```bash
+python global_etf_exposure_map/main.py --portfolio global_etf_exposure_map/sample_portfolio.json --pretty
+python economic_dependency_heatmap/main.py --portfolio economic_dependency_heatmap/sample_portfolio.json --pretty
+python hedgefund_dependency_engine/main.py --portfolio hedgefund_dependency_engine/sample_portfolio.json --pretty
+python earnings_clarity/main.py analyze-portfolio --holdings earnings_clarity/app/data/holdings/sample_holdings.json --quarter 2025Q4
+python true_cost_of_investing/main.py analyze --portfolio true_cost_of_investing/app/data/portfolios/sample_high_fee_portfolio.json --assumptions true_cost_of_investing/app/data/assumptions/taxable_account.json
+python economic_regime_translator/main.py classify --snapshot economic_regime_translator/app/data/samples/current_snapshot.json --history economic_regime_translator/app/data/historical/historical_macro.csv --with-analogs
+python value_check/main.py check --ticker MSFT
+python moat_watch/main.py analyze --ticker SBUX --quarter 2025Q2 --pretty
+python harvest_alert/main.py scan --pretty
+```
 
-If region, currency, or country code are missing, the importer will infer them from `global_etf_exposure_map/app/data/metadata/regions.csv` when possible.
+For full usage, assumptions, data format, and endpoint details, use the feature README links above.
 
-## ETF Catalog Fetch
+## Repository Layout
 
-There is no single free official source that gives both every ETF ticker and every ETF's full holdings in one easy public file. For the ticker universe, this project now uses Nasdaq Trader's official symbol-directory files, which include an `ETF` flag for listed symbols:
+Top-level structure:
 
-- [Nasdaq Trader home](https://www.nasdaqtrader.com/HomePage.aspx)
-- [Nasdaq daily list file specification](https://www.nasdaqtrader.com/content/technicalsupport/specifications/dataproducts/dlcompletespec.pdf)
+- [etf_overlap](/Users/uw-user/Desktop/start/etf_overlap): original overlap engine and shared API home
+- [global_etf_exposure_map](/Users/uw-user/Desktop/start/global_etf_exposure_map): look-through geography and revenue exposure mapping
+- [economic_dependency_heatmap](/Users/uw-user/Desktop/start/economic_dependency_heatmap): dependency heatmaps and macro-driver summaries
+- [hedgefund_dependency_engine](/Users/uw-user/Desktop/start/hedgefund_dependency_engine): deeper propagation, shock transmission, graph analysis, and live-news-assisted macro overlays
+- [earnings_clarity](/Users/uw-user/Desktop/start/earnings_clarity): plain-English quarterly earnings interpretation
+- [true_cost_of_investing](/Users/uw-user/Desktop/start/true_cost_of_investing): long-term fee, tax drag, and friction-cost modeling
+- [economic_regime_translator](/Users/uw-user/Desktop/start/economic_regime_translator): macro snapshot classification and historical analogs
+- [value_check](/Users/uw-user/Desktop/start/value_check): stock and ETF valuation context
+- [moat_watch](/Users/uw-user/Desktop/start/moat_watch): moat-health monitoring and peer-relative competitive-strength tracking
+- [harvest_alert](/Users/uw-user/Desktop/start/harvest_alert): tax-loss harvesting scanner with wash-sale checks and replacement suggestions
+- [etf_ingest](/Users/uw-user/Desktop/start/etf_ingest): bulk holdings import pipeline
+- [etf_catalog](/Users/uw-user/Desktop/start/etf_catalog): ETF universe catalog fetch utilities
+- [ingestion_samples](/Users/uw-user/Desktop/start/ingestion_samples): sample raw holdings templates
+- [tests](/Users/uw-user/Desktop/start/tests): shared root tests for the original overlap engine
 
-Fetch the ETF catalog with:
+## Data and Ingestion Utilities
+
+This repo also includes utilities for expanding ETF coverage locally.
+
+Fetch the ETF symbol catalog:
 
 ```bash
 python fetch_etf_catalog.py
 ```
 
-This writes:
+Bulk-ingest ETF holdings from a normalized CSV:
 
-`data/catalog/us_etf_catalog.csv`
+```bash
+python ingest_etf_holdings.py --source-csv ingestion_samples/bulk_holdings_template.csv --target both --pretty
+```
 
-Important:
+These utilities populate the shared overlap/global-exposure datasets used by the dashboard and APIs.
 
-- this catalog gives you ETF tickers and names
-- it does not give you ETF holdings
-- for analysis, the ETF must still have holdings data locally, either from the bundled dataset or from `ingest_etf_holdings.py`
+## What Makes This Repo Different
+
+This is not a single script or a single dashboard page. It is a collection of research and investor-education products that share:
+
+- a common local development environment
+- a common Streamlit interface
+- reusable sample datasets
+- standalone package boundaries for each feature
+- production-style service layering with APIs, CLIs, and tests
+
+## Notes
+
+- This repository is built to run locally without paid APIs.
+- Many features use realistic mock or sample datasets plus provider abstractions for future live integrations.
+- Several products surface educational estimates, not personalized tax, legal, or investment advice.
+- Some Streamlit imports will emit the usual `missing ScriptRunContext` warning when imported outside `streamlit run`; that is expected in bare import smoke checks.
