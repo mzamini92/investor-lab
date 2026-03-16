@@ -69,7 +69,7 @@ The current snapshot is compared against a historical dataset using normalized i
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r economic_regime_translator/requirements.txt

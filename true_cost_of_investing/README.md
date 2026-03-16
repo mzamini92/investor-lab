@@ -58,7 +58,7 @@ These assumptions are transparent in the code and sample files and can be adjust
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r true_cost_of_investing/requirements.txt

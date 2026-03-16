@@ -68,7 +68,7 @@ Additional bundled peer helpers:
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python -m venv .venv
 source .venv/bin/activate
 pip install -r value_check/requirements.txt
@@ -171,11 +171,11 @@ The provider layer is designed so you can replace bundled data with:
 
 The main extension points live in:
 
-- `/Users/uw-user/Desktop/start/value_check/app/providers/base.py`
-- `/Users/uw-user/Desktop/start/value_check/app/providers/valuation_provider.py`
+- `value_check/app/providers/base.py`
+- `value_check/app/providers/valuation_provider.py`
 
 ## Testing
 
 ```bash
-pytest /Users/uw-user/Desktop/start/value_check/tests
+pytest value_check/tests
 ```

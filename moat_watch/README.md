@@ -73,7 +73,7 @@ Peer datasets are also bundled for:
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python -m venv .venv
 source .venv/bin/activate
 pip install -r moat_watch/requirements.txt
@@ -139,11 +139,11 @@ The provider layer is designed so you can plug in:
 
 Main extension points:
 
-- `/Users/uw-user/Desktop/start/moat_watch/app/providers/base.py`
-- `/Users/uw-user/Desktop/start/moat_watch/app/providers/moat_provider.py`
+- `moat_watch/app/providers/base.py`
+- `moat_watch/app/providers/moat_provider.py`
 
 ## Testing
 
 ```bash
-pytest /Users/uw-user/Desktop/start/moat_watch/tests
+pytest moat_watch/tests
 ```

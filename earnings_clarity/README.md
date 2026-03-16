@@ -40,7 +40,7 @@ The MVP is deterministic and transparent:
 ## Install
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r earnings_clarity/requirements.txt

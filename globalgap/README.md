@@ -25,7 +25,7 @@ It answers questions like:
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python -m venv .venv
 source .venv/bin/activate
 pip install -r globalgap/requirements.txt

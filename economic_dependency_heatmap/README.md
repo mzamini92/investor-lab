@@ -43,7 +43,7 @@ This project adds:
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r economic_dependency_heatmap/requirements.txt

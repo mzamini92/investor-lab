@@ -61,7 +61,7 @@ HarvestAlert checks for:
 ## Installation
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python -m venv .venv
 source .venv/bin/activate
 pip install -r harvest_alert/requirements.txt
@@ -129,11 +129,11 @@ The provider layer is designed so you can swap in:
 
 Main extension points:
 
-- `/Users/uw-user/Desktop/start/harvest_alert/app/providers/base.py`
-- `/Users/uw-user/Desktop/start/harvest_alert/app/providers/brokerage_provider.py`
+- `harvest_alert/app/providers/base.py`
+- `harvest_alert/app/providers/brokerage_provider.py`
 
 ## Testing
 
 ```bash
-pytest /Users/uw-user/Desktop/start/harvest_alert/tests
+pytest harvest_alert/tests
 ```

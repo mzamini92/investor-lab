@@ -28,7 +28,7 @@ Current locally supported ETF dataset:
 To add many more ETFs quickly, use the root importer:
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 .venv/bin/python ingest_etf_holdings.py --source-csv ingestion_samples/bulk_holdings_template.csv --target both --pretty
 ```
 
@@ -49,7 +49,7 @@ cd /Users/uw-user/Desktop/start
 Python 3.11+ is the intended target. The implementation also remains lightweight enough to run on compatible local Python environments with the listed packages.
 
 ```bash
-cd /Users/uw-user/Desktop/start
+cd .
 python3 -m venv .venv
 source .venv/bin/activate
 pip install '.[dev]'
