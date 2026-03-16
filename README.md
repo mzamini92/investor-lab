@@ -1,5 +1,11 @@
 # ETF Analytics Platform
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-investor--lab-111827?style=for-the-badge&logo=github)](https://github.com/mzamini92/investor-lab)
+[![Star This Repo](https://img.shields.io/badge/Star%20This%20Repo-Support%20the%20Project-f59e0b?style=for-the-badge&logo=github)](https://github.com/mzamini92/investor-lab/stargazers)
+
+> If this project saves you research time or helps you invest more clearly, please consider starring it on GitHub:
+> [github.com/mzamini92/investor-lab](https://github.com/mzamini92/investor-lab)
+
 This repository is a multi-product fintech analytics workspace built around a shared Streamlit dashboard and a set of standalone Python MVPs.
 
 It started as an ETF overlap tool and now includes a broader suite for:
@@ -18,26 +24,26 @@ The shared app is designed to make these tools usable together, while each featu
 
 ## What Lives Here
 
-- Shared dashboard: [streamlit_app.py](streamlit_app.py)
-- Shared entry point: [main.py](main.py)
-- Shared package config: [pyproject.toml](pyproject.toml)
-- Core ETF overlap API package: [etf_overlap](/etf_overlap/)
-- Shared sample holdings data: [data](/data)
+- Shared dashboard: [streamlit_app.py](/Users/uw-user/Desktop/start/streamlit_app.py)
+- Shared entry point: [main.py](/Users/uw-user/Desktop/start/main.py)
+- Shared package config: [pyproject.toml](/Users/uw-user/Desktop/start/pyproject.toml)
+- Core ETF overlap API package: [etf_overlap](/Users/uw-user/Desktop/start/etf_overlap)
+- Shared sample holdings data: [data](/Users/uw-user/Desktop/start/data)
 
 ## Feature Docs
 
 Each major feature has its own markdown documentation:
 
-- Global ETF Exposure Map: [global_etf_exposure_map/README.md](/global_etf_exposure_map/README.md)
-- ETF Overlap / core platform: this root guide, [README.md](/README.md)
-- Economic Dependency Heatmap: [economic_dependency_heatmap/README.md](/economic_dependency_heatmap/README.md)
-- Hedgefund Dependency Engine: [hedgefund_dependency_engine/README.md](/hedgefund_dependency_engine/README.md)
-- EarningsClarity: [earnings_clarity/README.md](/earnings_clarity/README.md)
-- True Cost of Investing: [true_cost_of_investing/README.md](/true_cost_of_investing/README.md)
-- Economic Regime Translator: [economic_regime_translator/README.md](/economic_regime_translator/README.md)
-- ValueCheck: [value_check/README.md](/value_check/README.md)
-- MoatWatch: [moat_watch/README.md](/moat_watch/README.md)
-- HarvestAlert: [harvest_alert/README.md](/harvest_alert/README.md)
+- Global ETF Exposure Map: [global_etf_exposure_map/README.md](/Users/uw-user/Desktop/start/global_etf_exposure_map/README.md)
+- ETF Overlap / core platform: this root guide, [README.md](/Users/uw-user/Desktop/start/README.md)
+- Economic Dependency Heatmap: [economic_dependency_heatmap/README.md](/Users/uw-user/Desktop/start/economic_dependency_heatmap/README.md)
+- Hedgefund Dependency Engine: [hedgefund_dependency_engine/README.md](/Users/uw-user/Desktop/start/hedgefund_dependency_engine/README.md)
+- EarningsClarity: [earnings_clarity/README.md](/Users/uw-user/Desktop/start/earnings_clarity/README.md)
+- True Cost of Investing: [true_cost_of_investing/README.md](/Users/uw-user/Desktop/start/true_cost_of_investing/README.md)
+- Economic Regime Translator: [economic_regime_translator/README.md](/Users/uw-user/Desktop/start/economic_regime_translator/README.md)
+- ValueCheck: [value_check/README.md](/Users/uw-user/Desktop/start/value_check/README.md)
+- MoatWatch: [moat_watch/README.md](/Users/uw-user/Desktop/start/moat_watch/README.md)
+- HarvestAlert: [harvest_alert/README.md](/Users/uw-user/Desktop/start/harvest_alert/README.md)
 
 ## Shared Dashboard
 
@@ -116,20 +122,20 @@ For full usage, assumptions, data format, and endpoint details, use the feature 
 
 Top-level structure:
 
-- [etf_overlap](/etf_overlap): original overlap engine and shared API home
-- [global_etf_exposure_map](/global_etf_exposure_map): look-through geography and revenue exposure mapping
-- [economic_dependency_heatmap](/economic_dependency_heatmap): dependency heatmaps and macro-driver summaries
-- [hedgefund_dependency_engine](/hedgefund_dependency_engine): deeper propagation, shock transmission, graph analysis, and live-news-assisted macro overlays
-- [earnings_clarity](/earnings_clarity): plain-English quarterly earnings interpretation
-- [true_cost_of_investing](/true_cost_of_investing): long-term fee, tax drag, and friction-cost modeling
-- [economic_regime_translator](/economic_regime_translator): macro snapshot classification and historical analogs
-- [value_check](/value_check): stock and ETF valuation context
-- [moat_watch](/moat_watch): moat-health monitoring and peer-relative competitive-strength tracking
-- [harvest_alert](/harvest_alert): tax-loss harvesting scanner with wash-sale checks and replacement suggestions
-- [etf_ingest](/etf_ingest): bulk holdings import pipeline
-- [etf_catalog](/etf_catalog): ETF universe catalog fetch utilities
-- [ingestion_samples](/ingestion_samples): sample raw holdings templates
-- [tests](/tests): shared root tests for the original overlap engine
+- [etf_overlap](/Users/uw-user/Desktop/start/etf_overlap): original overlap engine and shared API home
+- [global_etf_exposure_map](/Users/uw-user/Desktop/start/global_etf_exposure_map): look-through geography and revenue exposure mapping
+- [economic_dependency_heatmap](/Users/uw-user/Desktop/start/economic_dependency_heatmap): dependency heatmaps and macro-driver summaries
+- [hedgefund_dependency_engine](/Users/uw-user/Desktop/start/hedgefund_dependency_engine): deeper propagation, shock transmission, graph analysis, and live-news-assisted macro overlays
+- [earnings_clarity](/Users/uw-user/Desktop/start/earnings_clarity): plain-English quarterly earnings interpretation
+- [true_cost_of_investing](/Users/uw-user/Desktop/start/true_cost_of_investing): long-term fee, tax drag, and friction-cost modeling
+- [economic_regime_translator](/Users/uw-user/Desktop/start/economic_regime_translator): macro snapshot classification and historical analogs
+- [value_check](/Users/uw-user/Desktop/start/value_check): stock and ETF valuation context
+- [moat_watch](/Users/uw-user/Desktop/start/moat_watch): moat-health monitoring and peer-relative competitive-strength tracking
+- [harvest_alert](/Users/uw-user/Desktop/start/harvest_alert): tax-loss harvesting scanner with wash-sale checks and replacement suggestions
+- [etf_ingest](/Users/uw-user/Desktop/start/etf_ingest): bulk holdings import pipeline
+- [etf_catalog](/Users/uw-user/Desktop/start/etf_catalog): ETF universe catalog fetch utilities
+- [ingestion_samples](/Users/uw-user/Desktop/start/ingestion_samples): sample raw holdings templates
+- [tests](/Users/uw-user/Desktop/start/tests): shared root tests for the original overlap engine
 
 ## Data and Ingestion Utilities
 
