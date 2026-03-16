@@ -42,7 +42,7 @@ from etf_catalog.fetcher import load_etf_catalog
 from etf_overlap.config import DEFAULT_DATA_DIR
 from etf_overlap.config import DEFAULT_SAMPLE_PORTFOLIO
 from etf_overlap.engine import PortfolioAnalyzer
-from etf_overlap.providers.csv_provider import CSVHoldingsProvider
+from etf_overlap.providers.live_provider import LiveHybridHoldingsProvider
 from etf_overlap.visualization import plot_overlap_heatmap, plot_sector_exposure_chart, plot_top_holdings_bar
 from global_etf_exposure_map.app.config import DEFAULT_SAMPLE_PORTFOLIO as DEFAULT_GLOBAL_SAMPLE_PORTFOLIO
 from global_etf_exposure_map.app.config import ETF_HOLDINGS_DIR
@@ -358,6 +358,8 @@ def _portfolio_picker(
     catalog_df: pd.DataFrame,
     state_key_prefix: str,
     default_tickers: list[str],
+    default_total_amount: float = 10000.0,
+    default_amounts: dict[str, float] | None = None,
 ) -> list[dict[str, Any]]:
     st.markdown(f"**{title}**")
     name_map = {
@@ -370,18 +372,69 @@ def _portfolio_picker(
         default=[ticker for ticker in default_tickers if ticker in supported_tickers],
         key=f"{state_key_prefix}_tickers",
     )
-    portfolio: list[dict[str, Any]] = []
+    if not selected:
+        st.caption("Pick one or more ETFs to build an allocation.")
+        return []
+
+    total_amount = st.number_input(
+        "Total portfolio amount",
+        min_value=0.0,
+        value=float(default_total_amount),
+        step=500.0,
+        key=f"{state_key_prefix}_total_amount",
+        help="Enter the total amount you want to allocate across the selected ETFs.",
+    )
+    st.caption("Drag each ETF slider left or right to lower or raise its share of the total portfolio.")
+
+    default_amounts = default_amounts or {}
+    default_amount_total = sum(
+        float(amount)
+        for ticker, amount in default_amounts.items()
+        if ticker in selected and float(amount) > 0
+    )
+
+    raw_weights: dict[str, float] = {}
     for ticker in selected:
         display_name = name_map.get(ticker, ticker)
-        amount = st.number_input(
-            f"{ticker} amount",
-            min_value=0.0,
-            value=1000.0,
-            step=100.0,
-            key=f"{state_key_prefix}_{ticker}_amount",
-            help=display_name,
+        default_slider_value = 50
+        if default_amount_total > 0 and ticker in default_amounts:
+            default_slider_value = max(
+                1,
+                min(100, int(round((float(default_amounts[ticker]) / default_amount_total) * 100))),
+            )
+        raw_weights[ticker] = float(
+            st.slider(
+                f"{ticker} allocation tilt",
+                min_value=0,
+                max_value=100,
+                value=default_slider_value,
+                step=1,
+                key=f"{state_key_prefix}_{ticker}_tilt",
+                help=f"{display_name}. Left = smaller weight, right = larger weight.",
+            )
         )
-        portfolio.append({"ticker": ticker, "amount": float(amount)})
+
+    total_weight = sum(raw_weights.values())
+    if total_weight <= 0:
+        equal_weight = 1.0 / len(selected)
+        normalized_weights = {ticker: equal_weight for ticker in selected}
+    else:
+        normalized_weights = {ticker: raw_weights[ticker] / total_weight for ticker in selected}
+
+    portfolio: list[dict[str, Any]] = []
+    preview_rows: list[dict[str, Any]] = []
+    for ticker in selected:
+        allocation_pct = normalized_weights[ticker]
+        amount = float(total_amount) * allocation_pct
+        portfolio.append({"ticker": ticker, "amount": round(amount, 2)})
+        preview_rows.append(
+            {
+                "ticker": ticker,
+                "allocation_pct": round(allocation_pct * 100, 2),
+                "amount": round(amount, 2),
+            }
+        )
+    st.dataframe(pd.DataFrame(preview_rows), use_container_width=True, hide_index=True)
     return portfolio
 
 
@@ -1032,7 +1085,7 @@ st.title("ETF Analytics Platform")
 st.caption("Look through ETF labels to see overlap, concentration, true global exposure, and hidden macro dependency.")
 _render_hero()
 
-overlap_supported = CSVHoldingsProvider(DEFAULT_DATA_DIR).supported_etfs()
+overlap_supported = LiveHybridHoldingsProvider(DEFAULT_DATA_DIR).supported_etfs()
 global_supported = GlobalCSVHoldingsProvider(ETF_HOLDINGS_DIR).supported_etfs()
 dependency_analyzer = EconomicDependencyAnalyzer(CSVDependencyDataProvider(DEPENDENCY_HOLDINGS_DIR))
 dependency_supported = dependency_analyzer.data_provider.supported_etfs()
@@ -1100,21 +1153,37 @@ overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_
 with overlap_tab:
     st.subheader("ETF Hidden Overlap & Concentration Detector")
     _show_supported_caption(overlap_supported, catalog_count)
-    overlap_defaults = [item["ticker"] for item in DEFAULT_SAMPLE_PORTFOLIO]
+    overlap_include_all = st.toggle(
+        "Auto-include all supported overlap ETFs",
+        value=True,
+        key="overlap_include_all_supported",
+        help="When enabled, the quick picker starts with every locally supported overlap ETF selected instead of the smaller sample set.",
+    )
+    st.caption(
+        "Quick Picker only shows ETFs that are analyzable right now through local holdings, live support, or approved proxy coverage like SPY/IVV/SPLG/SCHX -> VOO, ITOT/SCHB -> VTI, VEU/ACWX -> IXUS, IEMG/VWO -> EEM, ONEQ/QQQM -> QQQ, and VEA/IEFA/EFA/SCHF -> SPDW."
+    )
+    overlap_defaults = sorted(overlap_supported) if overlap_include_all else [item["ticker"] for item in DEFAULT_SAMPLE_PORTFOLIO]
+    overlap_total_default = float(len(overlap_defaults) * 1000) if overlap_include_all else float(sum(item["amount"] for item in DEFAULT_SAMPLE_PORTFOLIO))
+    overlap_seed_portfolio = (
+        [{"ticker": ticker, "amount": 1000.0} for ticker in overlap_defaults]
+        if overlap_include_all
+        else DEFAULT_SAMPLE_PORTFOLIO
+    )
     picked_overlap_portfolio = _portfolio_picker(
         title="Quick Picker",
         supported_tickers=overlap_supported,
         catalog_df=catalog_df,
         state_key_prefix="overlap_picker",
         default_tickers=overlap_defaults,
+        default_total_amount=overlap_total_default,
+        default_amounts={item["ticker"]: float(item["amount"]) for item in overlap_seed_portfolio},
     )
-    overlap_default = json.dumps(DEFAULT_SAMPLE_PORTFOLIO, indent=2)
+    overlap_default_portfolio = picked_overlap_portfolio or DEFAULT_SAMPLE_PORTFOLIO
+    overlap_default = json.dumps(overlap_default_portfolio, indent=2)
     with st.form("overlap_form"):
         overlap_input = st.text_area(
             "Portfolio JSON",
-            value=json.dumps(picked_overlap_portfolio or DEFAULT_SAMPLE_PORTFOLIO, indent=2)
-            if picked_overlap_portfolio
-            else overlap_default,
+            value=overlap_default,
             height=220,
         )
         overlap_submit = st.form_submit_button("Analyze Overlap")
@@ -1148,21 +1217,37 @@ with overlap_tab:
 with global_tab:
     st.subheader("Global ETF Exposure Map")
     _show_supported_caption(global_supported, catalog_count)
-    global_defaults = [item["ticker"] for item in DEFAULT_GLOBAL_SAMPLE_PORTFOLIO]
+    global_include_all = st.toggle(
+        "Auto-include all supported global ETFs",
+        value=True,
+        key="global_include_all_supported",
+        help="When enabled, the quick picker starts with every analyzable Global Exposure ETF selected.",
+    )
+    st.caption(
+        "Quick Picker shows the same practical ETF universe as overlap, including approved proxy coverage like SPY/IVV/SPLG/SCHX -> VOO, ITOT/SCHB -> VTI, VEU/ACWX/VEA/IEFA/EFA/SCHF -> IXUS, IEMG/VWO -> EEM, and ONEQ/QQQM -> QQQ."
+    )
+    global_defaults = sorted(global_supported) if global_include_all else [item["ticker"] for item in DEFAULT_GLOBAL_SAMPLE_PORTFOLIO]
+    global_total_default = float(len(global_defaults) * 1000) if global_include_all else float(sum(item["amount"] for item in DEFAULT_GLOBAL_SAMPLE_PORTFOLIO))
+    global_seed_portfolio = (
+        [{"ticker": ticker, "amount": 1000.0} for ticker in global_defaults]
+        if global_include_all
+        else DEFAULT_GLOBAL_SAMPLE_PORTFOLIO
+    )
     picked_global_portfolio = _portfolio_picker(
         title="Quick Picker",
         supported_tickers=global_supported,
         catalog_df=catalog_df,
         state_key_prefix="global_picker",
         default_tickers=global_defaults,
+        default_total_amount=global_total_default,
+        default_amounts={item["ticker"]: float(item["amount"]) for item in global_seed_portfolio},
     )
-    global_default = json.dumps(DEFAULT_GLOBAL_SAMPLE_PORTFOLIO, indent=2)
+    global_default_portfolio = picked_global_portfolio or DEFAULT_GLOBAL_SAMPLE_PORTFOLIO
+    global_default = json.dumps(global_default_portfolio, indent=2)
     with st.form("global_form"):
         global_input = st.text_area(
             "Portfolio JSON",
-            value=json.dumps(picked_global_portfolio or DEFAULT_GLOBAL_SAMPLE_PORTFOLIO, indent=2)
-            if picked_global_portfolio
-            else global_default,
+            value=global_default,
             height=220,
         )
         global_submit = st.form_submit_button("Analyze Global Exposure")
@@ -1199,7 +1284,22 @@ with dependency_tab:
     st.subheader("Economic Dependency Heatmap")
     st.caption("What your portfolio really depends on beneath ETF labels.")
     _show_supported_caption(dependency_supported, catalog_count)
-    dependency_defaults = [item["ticker"] for item in DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO]
+    dependency_include_all = st.toggle(
+        "Auto-include all supported dependency ETFs",
+        value=True,
+        key="dependency_include_all_supported",
+        help="When enabled, the quick picker starts with every analyzable dependency ETF selected.",
+    )
+    st.caption(
+        "Quick Picker shows the same practical ETF universe as overlap and global exposure, including SPY/IVV/SPLG/SCHX -> VOO, ITOT/SCHB -> VTI, VEU/ACWX/VEA/IEFA/EFA/SCHF -> IXUS, IEMG/VWO -> EEM, and ONEQ/QQQM -> QQQ."
+    )
+    dependency_defaults = sorted(dependency_supported) if dependency_include_all else [item["ticker"] for item in DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO]
+    dependency_total_default = float(len(dependency_defaults) * 1000) if dependency_include_all else float(sum(item["amount"] for item in DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO))
+    dependency_seed_portfolio = (
+        [{"ticker": ticker, "amount": 1000.0} for ticker in dependency_defaults]
+        if dependency_include_all
+        else DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO
+    )
     dependency_upload_text = _portfolio_upload_widget("dependency")
     picked_dependency_portfolio = _portfolio_picker(
         title="Quick Picker",
@@ -1207,6 +1307,8 @@ with dependency_tab:
         catalog_df=catalog_df,
         state_key_prefix="dependency_picker",
         default_tickers=dependency_defaults,
+        default_total_amount=dependency_total_default,
+        default_amounts={item["ticker"]: float(item["amount"]) for item in dependency_seed_portfolio},
     )
     scenario_name_map = {scenario.name: scenario.display_name for scenario in dependency_scenarios}
     st.markdown('<div class="section-kicker">Scenario Toggles</div>', unsafe_allow_html=True)
@@ -1223,16 +1325,12 @@ with dependency_tab:
             )
             if enabled:
                 selected_dependency_scenarios.append(scenario.name)
-    dependency_default = json.dumps(DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO, indent=2)
+    dependency_default_portfolio = picked_dependency_portfolio or DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO
+    dependency_default = json.dumps(dependency_default_portfolio, indent=2)
     with st.form("dependency_form"):
         dependency_input = st.text_area(
             "Portfolio JSON",
-            value=dependency_upload_text
-            or (
-                json.dumps(picked_dependency_portfolio or DEFAULT_DEPENDENCY_SAMPLE_PORTFOLIO, indent=2)
-                if picked_dependency_portfolio
-                else dependency_default
-            ),
+            value=dependency_upload_text or dependency_default,
             height=220,
         )
         dependency_submit = st.form_submit_button("Analyze Dependencies")
@@ -1334,7 +1432,22 @@ with hf_tab:
     st.subheader("Hedgefund Dependency Engine")
     st.caption("Look-through exposure, macro loading, shock transmission, and graph concentration in one workflow.")
     _show_supported_caption(hf_supported, catalog_count)
-    hf_defaults = [item["ticker"] for item in DEFAULT_HF_SAMPLE_PORTFOLIO]
+    hf_include_all = st.toggle(
+        "Auto-include all supported hedgefund ETFs",
+        value=True,
+        key="hf_include_all_supported",
+        help="When enabled, the quick picker starts with every analyzable hedgefund dependency ETF selected.",
+    )
+    st.caption(
+        "Quick Picker shows the same practical ETF universe as overlap, global exposure, and dependency heatmap, including approved proxy coverage for common core-index equivalents."
+    )
+    hf_defaults = sorted(hf_supported) if hf_include_all else [item["ticker"] for item in DEFAULT_HF_SAMPLE_PORTFOLIO]
+    hf_total_default = float(len(hf_defaults) * 1000) if hf_include_all else float(sum(item["amount"] for item in DEFAULT_HF_SAMPLE_PORTFOLIO))
+    hf_seed_portfolio = (
+        [{"ticker": ticker, "amount": 1000.0} for ticker in hf_defaults]
+        if hf_include_all
+        else DEFAULT_HF_SAMPLE_PORTFOLIO
+    )
     hf_upload_text = _portfolio_upload_widget("hf")
     picked_hf_portfolio = _portfolio_picker(
         title="Quick Picker",
@@ -1342,6 +1455,8 @@ with hf_tab:
         catalog_df=catalog_df,
         state_key_prefix="hf_picker",
         default_tickers=hf_defaults,
+        default_total_amount=hf_total_default,
+        default_amounts={item["ticker"]: float(item["amount"]) for item in hf_seed_portfolio},
     )
     hf_default_selected = {"china_slowdown", "ai_boom", "usd_surge"}
     st.markdown('<div class="section-kicker">Scenario Toggles</div>', unsafe_allow_html=True)
@@ -1459,16 +1574,12 @@ with hf_tab:
         key="hf_headline_context",
         help="Optional free text. Matching event keywords can auto-activate dynamic scenarios.",
     )
-    hf_default = json.dumps(DEFAULT_HF_SAMPLE_PORTFOLIO, indent=2)
+    hf_default_portfolio = picked_hf_portfolio or DEFAULT_HF_SAMPLE_PORTFOLIO
+    hf_default = json.dumps(hf_default_portfolio, indent=2)
     with st.form("hf_form"):
         hf_input = st.text_area(
             "Portfolio JSON",
-            value=hf_upload_text
-            or (
-                json.dumps(picked_hf_portfolio or DEFAULT_HF_SAMPLE_PORTFOLIO, indent=2)
-                if picked_hf_portfolio
-                else hf_default
-            ),
+            value=hf_upload_text or hf_default,
             height=220,
         )
         hf_submit = st.form_submit_button("Analyze Hedgefund Engine")
@@ -1497,7 +1608,6 @@ with hf_tab:
             hf_comparison_figure = plot_hf_domicile_vs_revenue(hf_result["domicile_vs_revenue_comparison"])
             hf_country_figure = plot_hf_country_exposure_chart(hf_result["country_exposures"])
             hf_scenario_figure = plot_hf_scenario_impact_chart(hf_result["scenario_results"])
-            hf_network_figure = build_hf_network_figure(hf_result["graph_data"])
 
             st.markdown('<div class="section-kicker">Shareable Exports</div>', unsafe_allow_html=True)
             hf_export_col1, hf_export_col2, hf_export_col3 = st.columns(3)
@@ -1520,7 +1630,6 @@ with hf_tab:
                 )
             with hf_export_col3:
                 _figure_download_button("Download scenario impacts", hf_scenario_figure, "hedgefund_scenarios.html", "hf_scenarios")
-                _figure_download_button("Download network graph", hf_network_figure, "hedgefund_network.html", "hf_network")
 
             st.plotly_chart(hf_heatmap_figure, use_container_width=True)
             st.plotly_chart(hf_company_figure, use_container_width=True)
@@ -1537,8 +1646,62 @@ with hf_tab:
             with hf_scenario_col:
                 st.plotly_chart(hf_scenario_figure, use_container_width=True)
 
-            with st.expander("Dependency Network Graph", expanded=False):
-                st.plotly_chart(hf_network_figure, use_container_width=True)
+            st.markdown('<div class="section-kicker">Interactive Dependency Graph</div>', unsafe_allow_html=True)
+            graph_control_col1, graph_control_col2, graph_control_col3 = st.columns([2, 1, 1])
+            available_hf_node_types = sorted(
+                {
+                    str(node.get("node_type", ""))
+                    for node in hf_result["graph_data"].get("nodes", [])
+                    if str(node.get("node_type", ""))
+                }
+            )
+            with graph_control_col1:
+                selected_hf_node_types = st.multiselect(
+                    "Node types",
+                    options=available_hf_node_types,
+                    default=available_hf_node_types,
+                    key="hf_graph_node_types",
+                    help="Filter the graph to the layers you want to explore.",
+                )
+            with graph_control_col2:
+                hf_edge_weights = [float(edge.get("weight", 0.0)) for edge in hf_result["graph_data"].get("edges", [])]
+                hf_max_edge_weight = max(hf_edge_weights) if hf_edge_weights else 0.1
+                hf_min_edge_weight = st.slider(
+                    "Minimum link strength",
+                    min_value=0.0,
+                    max_value=float(max(0.01, round(hf_max_edge_weight, 3))),
+                    value=0.0,
+                    step=float(max(0.001, round(hf_max_edge_weight / 20, 3))),
+                    key="hf_graph_min_edge_weight",
+                    help="Hide weaker links to reduce clutter and focus on the strongest pathways.",
+                )
+            with graph_control_col3:
+                hf_layout_algorithm = st.selectbox(
+                    "Layout",
+                    options=["spring", "kamada_kawai", "circular"],
+                    format_func=lambda value: value.replace("_", " ").title(),
+                    key="hf_graph_layout",
+                )
+            hf_show_labels = st.checkbox(
+                "Show node labels",
+                value=True,
+                key="hf_graph_show_labels",
+                help="Turn labels off if you want a cleaner graph for panning and zooming.",
+            )
+            hf_network_figure = build_hf_network_figure(
+                hf_result["graph_data"],
+                included_node_types=selected_hf_node_types,
+                min_edge_weight=hf_min_edge_weight,
+                show_labels=hf_show_labels,
+                layout_algorithm=hf_layout_algorithm,
+            )
+            st.caption("Pan, zoom, hover, and filter the graph to trace concentration paths from the portfolio through ETFs and companies into macro drivers.")
+            st.plotly_chart(
+                hf_network_figure,
+                use_container_width=True,
+                config={"scrollZoom": True, "displayModeBar": True},
+            )
+            _figure_download_button("Download network graph", hf_network_figure, "hedgefund_network.html", "hf_network")
 
             st.subheader("Top Macro Drivers")
             st.dataframe(pd.DataFrame(hf_result["dependency_exposures"]).head(15), use_container_width=True)

@@ -44,31 +44,104 @@ def plot_world_map(map_ready_data: list[dict[str, Any]]) -> go.Figure:
     return px.choropleth(df, locations="country_code", color="domicile_exposure_pct", hover_name="country_name", color_continuous_scale="Blues", title="Global Exposure Map")
 
 
-def build_network_figure(graph_data: dict[str, Any]) -> go.Figure:
+def build_network_figure(
+    graph_data: dict[str, Any],
+    *,
+    included_node_types: list[str] | None = None,
+    min_edge_weight: float = 0.0,
+    show_labels: bool = True,
+    layout_algorithm: str = "spring",
+) -> go.Figure:
     graph = nx.DiGraph()
+    allowed_node_types = set(included_node_types or [])
     for node in graph_data.get("nodes", []):
-        graph.add_node(node["id"], label=node["label"], node_type=node["node_type"], weight=node["weight"])
+        node_type = str(node["node_type"])
+        if allowed_node_types and node_type not in allowed_node_types:
+            continue
+        graph.add_node(node["id"], label=node["label"], node_type=node_type, weight=node["weight"])
     for edge in graph_data.get("edges", []):
-        graph.add_edge(edge["source"], edge["target"], weight=edge["weight"])
-    positions = nx.spring_layout(graph, seed=7)
+        weight = float(edge["weight"])
+        if weight < float(min_edge_weight):
+            continue
+        if edge["source"] in graph and edge["target"] in graph:
+            graph.add_edge(edge["source"], edge["target"], weight=weight)
+
+    if not graph.nodes:
+        return go.Figure().update_layout(
+            title="Portfolio Dependency Network",
+            annotations=[
+                {
+                    "text": "No graph nodes remain after applying the current filters.",
+                    "xref": "paper",
+                    "yref": "paper",
+                    "x": 0.5,
+                    "y": 0.5,
+                    "showarrow": False,
+                    "font": {"size": 16},
+                }
+            ],
+        )
+
+    if layout_algorithm == "kamada_kawai":
+        positions = nx.kamada_kawai_layout(graph)
+    elif layout_algorithm == "circular":
+        positions = nx.circular_layout(graph)
+    else:
+        positions = nx.spring_layout(graph, seed=7)
+
     edge_x: list[float] = []
     edge_y: list[float] = []
-    for source, target in graph.edges():
+    edge_text: list[str] = []
+    for source, target, data in graph.edges(data=True):
         x0, y0 = positions[source]
         x1, y1 = positions[target]
         edge_x.extend([x0, x1, None])
         edge_y.extend([y0, y1, None])
-    edge_trace = go.Scatter(x=edge_x, y=edge_y, mode="lines", line={"width": 0.6, "color": "#b8c0db"}, hoverinfo="none")
+        edge_text.extend([f"{graph.nodes[source]['label']} -> {graph.nodes[target]['label']}<br>Strength: {float(data['weight']):.4f}"] * 2 + [None])
+    edge_trace = go.Scatter(
+        x=edge_x,
+        y=edge_y,
+        mode="lines",
+        line={"width": 0.8, "color": "#b8c0db"},
+        text=edge_text,
+        hovertemplate="%{text}<extra></extra>",
+    )
+    color_map = {
+        "portfolio": "#0f172a",
+        "etf": "#2563eb",
+        "company": "#10b981",
+        "dependency": "#f59e0b",
+        "country": "#7c3aed",
+        "region": "#db2777",
+        "currency": "#ea580c",
+    }
+    node_labels = [graph.nodes[node]["label"] for node in graph.nodes()]
+    node_types = [graph.nodes[node]["node_type"] for node in graph.nodes()]
     node_trace = go.Scatter(
         x=[positions[node][0] for node in graph.nodes()],
         y=[positions[node][1] for node in graph.nodes()],
-        mode="markers+text",
-        text=[graph.nodes[node]["label"] for node in graph.nodes()],
+        mode="markers+text" if show_labels else "markers",
+        text=node_labels if show_labels else None,
         textposition="top center",
-        marker={"size": [max(12.0, float(graph.nodes[node]["weight"]) * 100.0) for node in graph.nodes()], "color": "#22577a", "line": {"width": 1, "color": "#ffffff"}},
-        hoverinfo="text",
+        customdata=[[node_type, float(graph.nodes[node]["weight"])] for node, node_type in zip(graph.nodes(), node_types)],
+        marker={
+            "size": [max(14.0, float(graph.nodes[node]["weight"]) * 120.0) for node in graph.nodes()],
+            "color": [color_map.get(node_type, "#22577a") for node_type in node_types],
+            "line": {"width": 1, "color": "#ffffff"},
+        },
+        hovertemplate="<b>%{text}</b><br>Type: %{customdata[0]}<br>Weight: %{customdata[1]:.4f}<extra></extra>",
     )
-    return go.Figure(data=[edge_trace, node_trace]).update_layout(title="Portfolio Dependency Network", showlegend=False)
+    return go.Figure(data=[edge_trace, node_trace]).update_layout(
+        title="Portfolio Dependency Network",
+        showlegend=False,
+        dragmode="pan",
+        hovermode="closest",
+        margin={"l": 10, "r": 10, "t": 50, "b": 10},
+        xaxis={"showgrid": False, "zeroline": False, "visible": False},
+        yaxis={"showgrid": False, "zeroline": False, "visible": False},
+        plot_bgcolor="rgba(248,250,252,1)",
+        paper_bgcolor="rgba(248,250,252,1)",
+    )
 
 
 def save_chart_bundle(result: dict[str, Any], output_dir: Union[str, Path]) -> list[str]:

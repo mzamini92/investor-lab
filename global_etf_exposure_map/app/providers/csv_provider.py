@@ -10,6 +10,24 @@ from global_etf_exposure_map.app.providers.base import HoldingsProvider
 
 
 class CSVHoldingsProvider(HoldingsProvider):
+    ALIAS_MAP = {
+        "SPY": "VOO",
+        "IVV": "VOO",
+        "SPLG": "VOO",
+        "SCHX": "VOO",
+        "ITOT": "VTI",
+        "SCHB": "VTI",
+        "VEU": "IXUS",
+        "ACWX": "IXUS",
+        "IEMG": "EEM",
+        "VWO": "EEM",
+        "ONEQ": "QQQ",
+        "QQQM": "QQQ",
+        "VEA": "IXUS",
+        "IEFA": "IXUS",
+        "EFA": "IXUS",
+        "SCHF": "IXUS",
+    }
     REQUIRED_COLUMNS = {
         "etf_ticker",
         "underlying_ticker",
@@ -32,7 +50,8 @@ class CSVHoldingsProvider(HoldingsProvider):
 
     def get_holdings(self, ticker: str) -> ETFHoldings:
         normalized_ticker = ticker.upper().strip()
-        path = self.holdings_dir / f"{normalized_ticker}.csv"
+        canonical_ticker = self.ALIAS_MAP.get(normalized_ticker, normalized_ticker)
+        path = self.holdings_dir / f"{canonical_ticker}.csv"
         if not path.exists():
             raise HoldingsNotFoundError(f"Holdings CSV not found for ETF {normalized_ticker}: {path}")
 
@@ -72,4 +91,8 @@ class CSVHoldingsProvider(HoldingsProvider):
         ).normalized()
 
     def supported_etfs(self) -> list[str]:
-        return sorted(path.stem.upper() for path in self.holdings_dir.glob("*.csv"))
+        supported = {path.stem.upper() for path in self.holdings_dir.glob("*.csv")}
+        for alias, canonical in self.ALIAS_MAP.items():
+            if canonical in supported:
+                supported.add(alias)
+        return sorted(supported)

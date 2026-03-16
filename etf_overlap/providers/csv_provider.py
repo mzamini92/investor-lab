@@ -14,6 +14,20 @@ class CSVHoldingsProvider(HoldingsProvider):
     """Loads ETF holdings from a directory of CSV files named <ticker>.csv."""
 
     REQUIRED_COLUMNS = {"stock_ticker", "company_name", "weight", "sector"}
+    ALIAS_MAP = {
+        "SPY": "VOO",
+        "IVV": "VOO",
+        "SPLG": "VOO",
+        "SCHX": "VOO",
+        "ITOT": "VTI",
+        "SCHB": "VTI",
+        "VEU": "IXUS",
+        "ACWX": "IXUS",
+        "IEMG": "EEM",
+        "VWO": "EEM",
+        "ONEQ": "QQQ",
+        "QQQM": "QQQ",
+    }
 
     def __init__(self, data_dir: Union[str, Path]) -> None:
         self.data_dir = Path(data_dir)
@@ -22,7 +36,8 @@ class CSVHoldingsProvider(HoldingsProvider):
 
     def get_holdings(self, ticker: str) -> ETFHoldings:
         normalized_ticker = ticker.upper().strip()
-        csv_path = self.data_dir / f"{normalized_ticker}.csv"
+        canonical_ticker = self.ALIAS_MAP.get(normalized_ticker, normalized_ticker)
+        csv_path = self.data_dir / f"{canonical_ticker}.csv"
         if not csv_path.exists():
             raise HoldingsNotFoundError(f"No holdings CSV found for ETF {normalized_ticker}: {csv_path}")
 
@@ -48,4 +63,8 @@ class CSVHoldingsProvider(HoldingsProvider):
         return ETFHoldings(ticker=normalized_ticker, holdings=records).normalized()
 
     def supported_etfs(self) -> list[str]:
-        return sorted(path.stem.upper() for path in self.data_dir.glob("*.csv"))
+        supported = {path.stem.upper() for path in self.data_dir.glob("*.csv")}
+        for alias, canonical in self.ALIAS_MAP.items():
+            if canonical in supported:
+                supported.add(alias)
+        return sorted(supported)

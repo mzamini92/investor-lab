@@ -24,14 +24,14 @@ from etf_overlap.config import DEFAULT_DATA_DIR
 from etf_overlap.exceptions import ValidationError
 from etf_overlap.models import AnalysisResult, PortfolioPosition
 from etf_overlap.providers.base import HoldingsProvider
-from etf_overlap.providers.csv_provider import CSVHoldingsProvider
+from etf_overlap.providers.live_provider import LiveHybridHoldingsProvider
 
 
 class PortfolioAnalyzer:
     """Main orchestration layer for ETF portfolio look-through analysis."""
 
     def __init__(self, holdings_provider: Optional[HoldingsProvider] = None) -> None:
-        self.holdings_provider = holdings_provider or CSVHoldingsProvider(DEFAULT_DATA_DIR)
+        self.holdings_provider = holdings_provider or LiveHybridHoldingsProvider(DEFAULT_DATA_DIR)
 
     def analyze(self, portfolio: Union[list[dict[str, Any]], list[PortfolioPosition]]) -> AnalysisResult:
         positions = self._validate_portfolio(portfolio)

@@ -15,6 +15,24 @@ from economic_dependency_heatmap.app.utils.mappings import infer_profile_from_ro
 class CSVDependencyDataProvider(DependencyDataProvider):
     """Loads ETF holdings, company metadata, and scenarios from local CSV files."""
 
+    ALIAS_MAP = {
+        "SPY": "VOO",
+        "IVV": "VOO",
+        "SPLG": "VOO",
+        "SCHX": "VOO",
+        "ITOT": "VTI",
+        "SCHB": "VTI",
+        "VEU": "IXUS",
+        "ACWX": "IXUS",
+        "VEA": "IXUS",
+        "IEFA": "IXUS",
+        "EFA": "IXUS",
+        "SCHF": "IXUS",
+        "IEMG": "EEM",
+        "VWO": "EEM",
+        "ONEQ": "QQQ",
+        "QQQM": "QQQ",
+    }
     REQUIRED_COLUMNS = {
         "etf_ticker",
         "underlying_ticker",
@@ -47,7 +65,8 @@ class CSVDependencyDataProvider(DependencyDataProvider):
 
     def get_holdings(self, ticker: str) -> ETFHoldings:
         normalized_ticker = ticker.upper().strip()
-        path = self.holdings_dir / f"{normalized_ticker}.csv"
+        canonical_ticker = self.ALIAS_MAP.get(normalized_ticker, normalized_ticker)
+        path = self.holdings_dir / f"{canonical_ticker}.csv"
         if not path.exists():
             raise HoldingsNotFoundError(f"Holdings CSV not found for ETF {normalized_ticker}: {path}")
 
@@ -111,7 +130,11 @@ class CSVDependencyDataProvider(DependencyDataProvider):
         return list(self._scenarios)
 
     def supported_etfs(self) -> list[str]:
-        return sorted(path.stem.upper() for path in self.holdings_dir.glob("*.csv"))
+        supported = {path.stem.upper() for path in self.holdings_dir.glob("*.csv")}
+        for alias, canonical in self.ALIAS_MAP.items():
+            if canonical in supported:
+                supported.add(alias)
+        return sorted(supported)
 
     def _load_company_profiles(self) -> dict[str, CompanyProfile]:
         if not self.company_profiles_path.exists():
