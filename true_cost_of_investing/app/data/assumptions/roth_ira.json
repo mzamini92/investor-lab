@@ -1,0 +1,18 @@
+{
+  "monthly_contribution": 300,
+  "annual_gross_return": 0.08,
+  "investment_horizon_years": 30,
+  "account_type": "roth_ira",
+  "qualified_dividend_tax_rate": 0.0,
+  "ordinary_income_tax_rate": 0.0,
+  "capital_gains_tax_rate": 0.0,
+  "state_tax_rate": 0.0,
+  "annual_advisory_fee": 0.0025,
+  "annual_cash_drag": 0.0010,
+  "rebalance_frequency_per_year": 1,
+  "commission_per_trade": 0.0,
+  "slippage_bps": 1,
+  "tax_loss_harvesting_benefit": 0.0,
+  "contribution_growth_rate": 0.02,
+  "inflation_rate": 0.025
+}

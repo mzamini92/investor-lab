@@ -1,0 +1,14 @@
+etf_ticker,label_region,label_focus,underlying_ticker,company_name,holding_weight,sector,country_domicile,region,currency,market_cap_bucket,country_code,revenue_north_america,revenue_europe,revenue_asia_pacific,revenue_emerging_markets,revenue_latin_america,revenue_middle_east_africa
+VXUS,International,Total International ex-US,TSM,Taiwan Semiconductor Manufacturing Co. Ltd.,0.12,Technology,Taiwan,Emerging Markets,TWD,Mega Cap,TWN,0.18,0.16,0.26,0.30,0.05,0.05
+VXUS,International,Total International ex-US,ASML,ASML Holding N.V.,0.10,Technology,Netherlands,Europe,EUR,Mega Cap,NLD,0.28,0.32,0.18,0.14,0.04,0.04
+VXUS,International,Total International ex-US,NVO,Novo Nordisk A/S,0.10,Healthcare,Denmark,Europe,DKK,Mega Cap,DNK,0.32,0.38,0.12,0.12,0.03,0.03
+VXUS,International,Total International ex-US,SAP,SAP SE,0.09,Technology,Germany,Europe,EUR,Large Cap,DEU,0.30,0.34,0.14,0.14,0.04,0.04
+VXUS,International,Total International ex-US,NESN,Nestle S.A.,0.09,Consumer Staples,Switzerland,Europe,CHF,Large Cap,CHE,0.32,0.28,0.14,0.14,0.06,0.06
+VXUS,International,Total International ex-US,TM,Toyota Motor Corporation,0.08,Consumer Discretionary,Japan,Asia Pacific,JPY,Large Cap,JPN,0.30,0.16,0.34,0.12,0.04,0.04
+VXUS,International,Total International ex-US,SHEL,Shell plc,0.08,Energy,United Kingdom,Europe,GBP,Large Cap,GBR,0.24,0.30,0.16,0.18,0.06,0.06
+VXUS,International,Total International ex-US,BABA,Alibaba Group Holding Limited,0.08,Consumer Discretionary,China,Emerging Markets,CNY,Large Cap,CHN,0.10,0.10,0.20,0.48,0.06,0.06
+VXUS,International,Total International ex-US,TCEHY,Tencent Holdings Ltd.,0.07,Communication Services,China,Emerging Markets,CNY,Large Cap,CHN,0.08,0.08,0.20,0.50,0.07,0.07
+VXUS,International,Total International ex-US,RACE,Ferrari N.V.,0.07,Consumer Discretionary,Italy,Europe,EUR,Large Cap,ITA,0.34,0.32,0.14,0.12,0.04,0.04
+VXUS,International,Total International ex-US,HSBC,HSBC Holdings plc,0.06,Financials,United Kingdom,Europe,GBP,Large Cap,GBR,0.18,0.22,0.22,0.24,0.07,0.07
+VXUS,International,Total International ex-US,RIO,Rio Tinto Group,0.06,Materials,United Kingdom,Europe,GBP,Large Cap,GBR,0.18,0.20,0.24,0.24,0.07,0.07
+

@@ -1,0 +1,4 @@
+stock_ticker,company_name,weight,sector,country,market_cap,style_box
+ASML,ASML Holding N.V.,0.4,Technology,Netherlands,420000000000.0,Growth
+TM,Toyota Motor Corporation,0.33333333333333337,Consumer Discretionary,Japan,320000000000.0,Value
+BABA,Alibaba Group Holding Limited,0.26666666666666666,Consumer Discretionary,China,190000000000.0,Growth

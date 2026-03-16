@@ -1,0 +1,8 @@
+name,display_name,description,us_consumer,china_demand,europe_demand,ai_capex,cloud_spending,global_semiconductors,energy_prices,industrial_capex,emerging_market_growth,healthcare_spending,financial_conditions,usd_strength,interest_rate_sensitivity
+china_slowdown,China Slowdown,China demand weakens and spills over into cyclicals and EM growth.,-0.1,-1.0,-0.1,-0.2,-0.1,-0.3,-0.1,-0.3,-0.7,0.0,-0.2,0.2,-0.1
+europe_recession,Europe Recession,European demand contracts and industrial spending softens.,-0.1,-0.1,-1.0,-0.1,-0.1,-0.1,-0.1,-0.4,-0.2,0.0,-0.2,0.1,-0.2
+ai_boom,AI Capex Boom,AI infrastructure and cloud spending accelerate globally.,0.1,0.1,0.0,1.0,0.8,0.7,0.0,0.2,0.1,0.0,0.1,-0.1,-0.1
+usd_surge,USD Surge,The dollar strengthens sharply and tightens global financial conditions.,-0.2,-0.3,-0.3,-0.1,-0.1,-0.2,-0.1,-0.2,-0.4,0.0,-0.5,1.0,-0.4
+energy_spike,Energy Price Spike,Energy prices jump and commodity-sensitive exposures reprice.,-0.2,-0.1,-0.1,0.0,0.0,0.0,1.0,-0.1,-0.1,0.0,-0.1,0.1,-0.1
+fed_tightening,Fed Tightening,The Fed tightens policy and financial conditions worsen.,-0.3,-0.1,-0.1,-0.2,-0.2,-0.1,-0.1,-0.2,-0.2,0.0,-0.8,0.4,-1.0
+em_rebound,Emerging Markets Rebound,Emerging markets and cyclicals recover faster than expected.,0.0,0.4,0.1,0.1,0.0,0.1,0.1,0.2,1.0,0.0,0.2,-0.2,-0.1

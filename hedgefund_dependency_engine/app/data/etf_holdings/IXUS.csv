@@ -1,0 +1,4 @@
+etf_ticker,label_region,label_focus,underlying_ticker,company_name,holding_weight,sector,country_domicile,region,currency,market_cap_bucket,country_code,revenue_north_america,revenue_europe,revenue_asia_pacific,revenue_emerging_markets,revenue_latin_america,revenue_middle_east_africa
+IXUS,International,International Equity,ASML,ASML Holding N.V.,0.4,Technology,Netherlands,Europe,EUR,Mega Cap,NLD,0.28,0.32,0.18,0.14,0.04,0.04
+IXUS,International,International Equity,TM,Toyota Motor Corporation,0.33333333333333337,Consumer Discretionary,Japan,Asia Pacific,JPY,Large Cap,JPN,0.3,0.16,0.34,0.12,0.04,0.04
+IXUS,International,International Equity,BABA,Alibaba Group Holding Limited,0.26666666666666666,Consumer Discretionary,China,Emerging Markets,CNY,Large Cap,CHN,0.1,0.1,0.2,0.48,0.06,0.06

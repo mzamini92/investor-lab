@@ -1,0 +1,11 @@
+etf_ticker,label_region,label_focus,underlying_ticker,company_name,holding_weight,sector,country_domicile,region,currency,market_cap_bucket,country_code,revenue_north_america,revenue_europe,revenue_asia_pacific,revenue_emerging_markets,revenue_latin_america,revenue_middle_east_africa
+EEM,Emerging Markets,Emerging Markets Equity,TSM,Taiwan Semiconductor Manufacturing Co. Ltd.,0.16,Technology,Taiwan,Emerging Markets,TWD,Mega Cap,TWN,0.18,0.16,0.26,0.30,0.05,0.05
+EEM,Emerging Markets,Emerging Markets Equity,TCEHY,Tencent Holdings Ltd.,0.14,Communication Services,China,Emerging Markets,CNY,Mega Cap,CHN,0.08,0.08,0.20,0.50,0.07,0.07
+EEM,Emerging Markets,Emerging Markets Equity,BABA,Alibaba Group Holding Limited,0.12,Consumer Discretionary,China,Emerging Markets,CNY,Large Cap,CHN,0.10,0.10,0.20,0.48,0.06,0.06
+EEM,Emerging Markets,Emerging Markets Equity,Samsung Electronics Co. Ltd.,Samsung Electronics Co. Ltd.,0.12,Technology,South Korea,Asia Pacific,KRW,Mega Cap,KOR,0.16,0.12,0.30,0.28,0.07,0.07
+EEM,Emerging Markets,Emerging Markets Equity,Reliance Industries Ltd.,Reliance Industries Ltd.,0.10,Energy,India,Emerging Markets,INR,Large Cap,IND,0.06,0.06,0.18,0.56,0.07,0.07
+EEM,Emerging Markets,Emerging Markets Equity,Infosys Ltd.,Infosys Ltd.,0.10,Technology,India,Emerging Markets,INR,Large Cap,IND,0.22,0.20,0.14,0.34,0.05,0.05
+EEM,Emerging Markets,Emerging Markets Equity,Vale S.A.,Vale S.A.,0.10,Materials,Brazil,Latin America,BRL,Large Cap,BRA,0.12,0.12,0.20,0.24,0.26,0.06
+EEM,Emerging Markets,Emerging Markets Equity,Saudi Aramco,Saudi Aramco,0.08,Energy,Saudi Arabia,Middle East & Africa,SAR,Mega Cap,SAU,0.08,0.10,0.22,0.26,0.06,0.28
+EEM,Emerging Markets,Emerging Markets Equity,Naspers Ltd.,Naspers Ltd.,0.08,Communication Services,South Africa,Middle East & Africa,ZAR,Large Cap,ZAF,0.10,0.10,0.18,0.32,0.06,0.24
+

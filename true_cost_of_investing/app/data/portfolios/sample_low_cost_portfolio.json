@@ -1,0 +1,36 @@
+[
+  {
+    "ticker": "VTI",
+    "amount": 14000,
+    "expense_ratio": 0.0003,
+    "asset_type": "ETF",
+    "dividend_yield": 0.014,
+    "qualified_dividend_yield": 0.014,
+    "nonqualified_dividend_yield": 0.0,
+    "annual_turnover_rate": 0.03,
+    "estimated_spread_cost_bps": 1
+  },
+  {
+    "ticker": "VXUS",
+    "amount": 5000,
+    "expense_ratio": 0.0007,
+    "asset_type": "ETF",
+    "dividend_yield": 0.028,
+    "qualified_dividend_yield": 0.015,
+    "nonqualified_dividend_yield": 0.013,
+    "annual_turnover_rate": 0.08,
+    "estimated_spread_cost_bps": 2,
+    "withholding_tax_rate": 0.002
+  },
+  {
+    "ticker": "SCHD",
+    "amount": 4000,
+    "expense_ratio": 0.0006,
+    "asset_type": "ETF",
+    "dividend_yield": 0.032,
+    "qualified_dividend_yield": 0.03,
+    "nonqualified_dividend_yield": 0.002,
+    "annual_turnover_rate": 0.18,
+    "estimated_spread_cost_bps": 2
+  }
+]

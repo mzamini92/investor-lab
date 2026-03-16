@@ -1,0 +1,14 @@
+stock_ticker,company_name,weight,sector,country,market_cap,style_box
+AAPL,Apple Inc.,0.15,Technology,United States,2800000000000,Blend
+MSFT,Microsoft Corporation,0.14,Technology,United States,3100000000000,Blend
+NVDA,NVIDIA Corporation,0.12,Technology,United States,2200000000000,Growth
+AMZN,Amazon.com Inc.,0.10,Consumer Discretionary,United States,1850000000000,Growth
+META,Meta Platforms Inc.,0.08,Communication Services,United States,1200000000000,Growth
+GOOGL,Alphabet Inc. Class A,0.07,Communication Services,United States,1800000000000,Growth
+BRK.B,Berkshire Hathaway Inc. Class B,0.07,Financials,United States,850000000000,Value
+JPM,JPMorgan Chase & Co.,0.06,Financials,United States,550000000000,Value
+XOM,Exxon Mobil Corporation,0.05,Energy,United States,500000000000,Value
+LLY,Eli Lilly and Company,0.05,Healthcare,United States,730000000000,Growth
+AVGO,Broadcom Inc.,0.06,Technology,United States,650000000000,Growth
+TSLA,Tesla Inc.,0.05,Consumer Discretionary,United States,550000000000,Growth
+

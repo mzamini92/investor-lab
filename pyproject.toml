@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "etf-hidden-overlap-detector"
+version = "0.1.0"
+description = "Advanced ETF overlap, concentration, and diversification analysis for retail portfolios."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "fastapi>=0.110.0",
+  "uvicorn>=0.29.0",
+  "pandas>=2.2.0",
+  "numpy>=1.26.0",
+  "pydantic>=2.6.0",
+  "plotly>=5.20.0",
+  "networkx>=3.1,<4.0",
+  "matplotlib>=3.7.0",
+  "pycountry>=23.12.11",
+  "requests>=2.31.0",
+  "streamlit>=1.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["etf_overlap*", "global_etf_exposure_map*", "economic_dependency_heatmap*", "economic_regime_translator*", "hedgefund_dependency_engine*", "earnings_clarity*", "true_cost_of_investing*", "value_check*", "moat_watch*", "etf_ingest*", "etf_catalog*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

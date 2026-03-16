@@ -1,0 +1,11 @@
+{
+  "ticker": "NVDA",
+  "company_name": "NVIDIA Corporation",
+  "quarter": "2025Q4",
+  "earnings_date": "2025-11-19",
+  "revenue_actual": 37.4,
+  "revenue_estimate": 36.1,
+  "eps_actual": 0.81,
+  "eps_estimate": 0.77,
+  "guidance_summary": "Management remained very positive on AI infrastructure demand, but analysts pressed on customer concentration and China restrictions."
+}

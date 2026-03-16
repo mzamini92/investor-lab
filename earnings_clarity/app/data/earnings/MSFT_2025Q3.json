@@ -1,0 +1,11 @@
+{
+  "ticker": "MSFT",
+  "company_name": "Microsoft Corporation",
+  "quarter": "2025Q3",
+  "earnings_date": "2025-07-29",
+  "revenue_actual": 65.8,
+  "revenue_estimate": 65.1,
+  "eps_actual": 2.95,
+  "eps_estimate": 2.90,
+  "guidance_summary": "Management sounded positive on Azure and enterprise demand, but was less explicit on AI monetization timing."
+}

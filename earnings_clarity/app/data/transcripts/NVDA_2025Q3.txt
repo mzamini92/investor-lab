@@ -1,0 +1,7 @@
+Operator: Welcome to NVIDIA's quarterly earnings call.
+Jensen Huang (CEO): AI demand was very strong and we continued to see broad enthusiasm from cloud and enterprise customers. We remain highly confident in the long-term data center opportunity.
+Colette Kress (CFO): We saw strong growth and improving supply execution. While restrictions remained a factor, we sounded less cautious on near-term deployment timing than we do today.
+Operator: We will now begin the question-and-answer session.
+Analyst: Are supply constraints easing?
+Colette Kress (CFO): We are improving supply and feel good about execution.
+Operator: This concludes today's call.

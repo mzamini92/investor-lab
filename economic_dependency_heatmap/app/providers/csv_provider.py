@@ -1,0 +1,172 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Union
+
+import pandas as pd
+
+from economic_dependency_heatmap.app.config import COMPANY_PROFILES_PATH, DEPENDENCY_COLUMNS, SCENARIOS_PATH
+from economic_dependency_heatmap.app.exceptions import HoldingsNotFoundError, ValidationError
+from economic_dependency_heatmap.app.models import CompanyProfile, ETFHoldings, HoldingRecord, MacroScenario
+from economic_dependency_heatmap.app.providers.base import DependencyDataProvider
+from economic_dependency_heatmap.app.utils.mappings import infer_profile_from_row
+
+
+class CSVDependencyDataProvider(DependencyDataProvider):
+    """Loads ETF holdings, company metadata, and scenarios from local CSV files."""
+
+    REQUIRED_COLUMNS = {
+        "etf_ticker",
+        "underlying_ticker",
+        "company_name",
+        "holding_weight",
+        "sector",
+        "country_domicile",
+        "region",
+        "currency",
+        "market_cap_bucket",
+        "country_code",
+        "label_region",
+        "label_focus",
+    }
+
+    def __init__(
+        self,
+        holdings_dir: Path,
+        company_profiles_path: Path = COMPANY_PROFILES_PATH,
+        scenarios_path: Path = SCENARIOS_PATH,
+    ) -> None:
+        self.holdings_dir = Path(holdings_dir)
+        self.company_profiles_path = Path(company_profiles_path)
+        self.scenarios_path = Path(scenarios_path)
+
+        if not self.holdings_dir.exists():
+            raise ValidationError(f"Holdings directory does not exist: {self.holdings_dir}")
+        self._company_profiles = self._load_company_profiles()
+        self._scenarios = self._load_scenarios()
+
+    def get_holdings(self, ticker: str) -> ETFHoldings:
+        normalized_ticker = ticker.upper().strip()
+        path = self.holdings_dir / f"{normalized_ticker}.csv"
+        if not path.exists():
+            raise HoldingsNotFoundError(f"Holdings CSV not found for ETF {normalized_ticker}: {path}")
+
+        df = pd.read_csv(path)
+        missing_columns = self.REQUIRED_COLUMNS - set(df.columns)
+        if missing_columns:
+            raise ValidationError(f"Missing columns in {path}: {sorted(missing_columns)}")
+
+        label_region = str(df["label_region"].iloc[0])
+        label_focus = str(df["label_focus"].iloc[0])
+        holdings: list[HoldingRecord] = []
+        for _, row in df.iterrows():
+            row_dict = row.to_dict()
+            underlying_ticker = str(row_dict["underlying_ticker"]).upper().strip()
+            profile = self._company_profiles.get(underlying_ticker)
+            profile_dict = self._profile_to_dict(profile) if profile is not None else infer_profile_from_row(row_dict)
+            holdings.append(
+                HoldingRecord(
+                    etf_ticker=str(row_dict["etf_ticker"]),
+                    underlying_ticker=underlying_ticker,
+                    company_name=str(row_dict["company_name"]),
+                    holding_weight=float(row_dict["holding_weight"]),
+                    sector=str(row_dict["sector"]),
+                    country_domicile=str(row_dict["country_domicile"]),
+                    region=str(row_dict["region"]),
+                    currency=str(row_dict["currency"]),
+                    market_cap_bucket=str(row_dict["market_cap_bucket"]),
+                    country_code=str(row_dict["country_code"]),
+                    revenue_us=float(profile_dict["revenue_us"]),
+                    revenue_europe=float(profile_dict["revenue_europe"]),
+                    revenue_china=float(profile_dict["revenue_china"]),
+                    revenue_apac_ex_china=float(profile_dict["revenue_apac_ex_china"]),
+                    revenue_japan=float(profile_dict["revenue_japan"]),
+                    revenue_latam=float(profile_dict["revenue_latam"]),
+                    revenue_mea=float(profile_dict["revenue_mea"]),
+                    revenue_other=float(profile_dict["revenue_other"]),
+                    us_consumer=float(profile_dict["us_consumer"]),
+                    china_demand=float(profile_dict["china_demand"]),
+                    europe_demand=float(profile_dict["europe_demand"]),
+                    ai_capex=float(profile_dict["ai_capex"]),
+                    cloud_spending=float(profile_dict["cloud_spending"]),
+                    global_semiconductors=float(profile_dict["global_semiconductors"]),
+                    energy_prices=float(profile_dict["energy_prices"]),
+                    industrial_capex=float(profile_dict["industrial_capex"]),
+                    emerging_market_growth=float(profile_dict["emerging_market_growth"]),
+                    healthcare_spending=float(profile_dict["healthcare_spending"]),
+                    financial_conditions=float(profile_dict["financial_conditions"]),
+                    usd_strength=float(profile_dict["usd_strength"]),
+                    interest_rate_sensitivity=float(profile_dict["interest_rate_sensitivity"]),
+                    profile_source=str(profile_dict["profile_source"]),
+                )
+            )
+        return ETFHoldings(
+            ticker=normalized_ticker,
+            label_region=label_region,
+            label_focus=label_focus,
+            holdings=holdings,
+        ).normalized()
+
+    def get_scenarios(self) -> list[MacroScenario]:
+        return list(self._scenarios)
+
+    def supported_etfs(self) -> list[str]:
+        return sorted(path.stem.upper() for path in self.holdings_dir.glob("*.csv"))
+
+    def _load_company_profiles(self) -> dict[str, CompanyProfile]:
+        if not self.company_profiles_path.exists():
+            return {}
+        df = pd.read_csv(self.company_profiles_path)
+        profiles: dict[str, CompanyProfile] = {}
+        for _, row in df.iterrows():
+            row_dict = row.fillna(0.0).to_dict()
+            row_dict["underlying_ticker"] = str(row_dict["underlying_ticker"]).upper().strip()
+            row_dict["profile_source"] = str(row_dict.get("profile_source", "curated"))
+            profiles[row_dict["underlying_ticker"]] = CompanyProfile(**row_dict)
+        return profiles
+
+    def _load_scenarios(self) -> list[MacroScenario]:
+        if not self.scenarios_path.exists():
+            return []
+        df = pd.read_csv(self.scenarios_path).fillna(0.0)
+        scenarios: list[MacroScenario] = []
+        for _, row in df.iterrows():
+            row_dict = row.to_dict()
+            shocks = {dependency_name: float(row_dict.get(dependency_name, 0.0)) for dependency_name in DEPENDENCY_COLUMNS}
+            scenarios.append(
+                MacroScenario(
+                    name=str(row_dict["name"]),
+                    display_name=str(row_dict["display_name"]),
+                    description=str(row_dict["description"]),
+                    shock_weights=shocks,
+                )
+            )
+        return scenarios
+
+    @staticmethod
+    def _profile_to_dict(profile: CompanyProfile) -> dict[str, Union[float, str]]:
+        payload = {
+            "revenue_us": profile.revenue_us,
+            "revenue_europe": profile.revenue_europe,
+            "revenue_china": profile.revenue_china,
+            "revenue_apac_ex_china": profile.revenue_apac_ex_china,
+            "revenue_japan": profile.revenue_japan,
+            "revenue_latam": profile.revenue_latam,
+            "revenue_mea": profile.revenue_mea,
+            "revenue_other": profile.revenue_other,
+            "us_consumer": profile.us_consumer,
+            "china_demand": profile.china_demand,
+            "europe_demand": profile.europe_demand,
+            "ai_capex": profile.ai_capex,
+            "cloud_spending": profile.cloud_spending,
+            "global_semiconductors": profile.global_semiconductors,
+            "energy_prices": profile.energy_prices,
+            "industrial_capex": profile.industrial_capex,
+            "emerging_market_growth": profile.emerging_market_growth,
+            "healthcare_spending": profile.healthcare_spending,
+            "financial_conditions": profile.financial_conditions,
+            "usd_strength": profile.usd_strength,
+            "interest_rate_sensitivity": profile.interest_rate_sensitivity,
+            "profile_source": profile.profile_source,
+        }
+        return payload

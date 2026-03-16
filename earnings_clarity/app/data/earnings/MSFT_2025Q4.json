@@ -1,0 +1,11 @@
+{
+  "ticker": "MSFT",
+  "company_name": "Microsoft Corporation",
+  "quarter": "2025Q4",
+  "earnings_date": "2025-10-28",
+  "revenue_actual": 68.9,
+  "revenue_estimate": 67.7,
+  "eps_actual": 3.11,
+  "eps_estimate": 3.04,
+  "guidance_summary": "Management maintained a constructive outlook and emphasized continued Azure and AI demand, while acknowledging capacity timing."
+}

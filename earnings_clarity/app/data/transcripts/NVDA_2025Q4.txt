@@ -1,0 +1,9 @@
+Operator: Welcome to NVIDIA's quarterly earnings call.
+Jensen Huang (CEO): AI infrastructure demand remained exceptionally strong, with hyperscale and enterprise customers continuing to invest. We also saw strong momentum in networking and next-generation inference workloads.
+Colette Kress (CFO): Revenue exceeded our expectations, but there are still areas of uncertainty around export restrictions and customer concentration. We remain confident in long-term AI demand, though quarterly visibility can be limited when large deployments shift in timing.
+Operator: We will now begin the question-and-answer session.
+Joseph Moore (Morgan Stanley Analyst): How should investors think about concentration risk if a few hyperscalers slow spending?
+Jensen Huang (CEO): Demand is broadening, but customer concentration is still something we monitor closely. We are not assuming every customer ramps on the same timeline.
+Atif Malik (Citi Analyst): Has China changed meaningfully for your near-term outlook?
+Colette Kress (CFO): China remains uncertain because of restrictions, and that continues to be a headwind in our planning assumptions.
+Operator: This concludes today's call.

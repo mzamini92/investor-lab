@@ -1,0 +1,4 @@
+stock_ticker,company_name,weight,sector,country,market_cap,style_box
+HD,Home Depot Inc.,0.375,Consumer Discretionary,United States,380000000000.0,Value
+PEP,PepsiCo Inc.,0.33333333333333337,Consumer Staples,United States,240000000000.0,Blend
+MRK,Merck & Co. Inc.,0.2916666666666667,Healthcare,United States,320000000000.0,Blend

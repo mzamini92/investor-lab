@@ -1,0 +1,14 @@
+etf_ticker,label_region,label_focus,underlying_ticker,company_name,holding_weight,sector,country_domicile,region,currency,market_cap_bucket,country_code,revenue_north_america,revenue_europe,revenue_asia_pacific,revenue_emerging_markets,revenue_latin_america,revenue_middle_east_africa
+VOO,North America,S&P 500,AAPL,Apple Inc.,0.17,Technology,United States,North America,USD,Mega Cap,USA,0.45,0.22,0.18,0.08,0.03,0.04
+VOO,North America,S&P 500,MSFT,Microsoft Corporation,0.16,Technology,United States,North America,USD,Mega Cap,USA,0.50,0.22,0.14,0.08,0.03,0.03
+VOO,North America,S&P 500,NVDA,NVIDIA Corporation,0.13,Technology,United States,North America,USD,Mega Cap,USA,0.38,0.18,0.22,0.16,0.03,0.03
+VOO,North America,S&P 500,AMZN,Amazon.com Inc.,0.11,Consumer Discretionary,United States,North America,USD,Mega Cap,USA,0.68,0.16,0.08,0.04,0.02,0.02
+VOO,North America,S&P 500,META,Meta Platforms Inc.,0.08,Communication Services,United States,North America,USD,Mega Cap,USA,0.48,0.24,0.12,0.10,0.03,0.03
+VOO,North America,S&P 500,GOOGL,Alphabet Inc. Class A,0.07,Communication Services,United States,North America,USD,Mega Cap,USA,0.46,0.29,0.12,0.08,0.02,0.03
+VOO,North America,S&P 500,BRK.B,Berkshire Hathaway Inc. Class B,0.07,Financials,United States,North America,USD,Mega Cap,USA,0.88,0.05,0.03,0.02,0.01,0.01
+VOO,North America,S&P 500,JPM,JPMorgan Chase & Co.,0.06,Financials,United States,North America,USD,Mega Cap,USA,0.60,0.20,0.08,0.08,0.02,0.02
+VOO,North America,S&P 500,LLY,Eli Lilly and Company,0.05,Healthcare,United States,North America,USD,Large Cap,USA,0.58,0.20,0.10,0.08,0.02,0.02
+VOO,North America,S&P 500,AVGO,Broadcom Inc.,0.05,Technology,United States,North America,USD,Mega Cap,USA,0.32,0.22,0.20,0.18,0.04,0.04
+VOO,North America,S&P 500,XOM,Exxon Mobil Corporation,0.03,Energy,United States,North America,USD,Large Cap,USA,0.36,0.24,0.16,0.14,0.05,0.05
+VOO,North America,S&P 500,TSLA,Tesla Inc.,0.02,Consumer Discretionary,United States,North America,USD,Mega Cap,USA,0.48,0.18,0.16,0.12,0.03,0.03
+

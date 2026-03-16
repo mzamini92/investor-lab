@@ -1,0 +1,7 @@
+etf_ticker,label_region,label_focus,underlying_ticker,company_name,holding_weight,sector,country_domicile,country_code,region,currency,market_cap,market_cap_bucket,style_box,revenue_north_america,revenue_europe,revenue_asia_pacific,revenue_emerging_markets,revenue_latin_america,revenue_middle_east_africa
+IXUS,International,International Equity,ASML,ASML Holding N.V.,0.12,Technology,Netherlands,NLD,Europe,EUR,420000000000,Mega Cap,Growth,0.28,0.32,0.18,0.14,0.04,0.04
+IXUS,International,International Equity,TM,Toyota Motor Corporation,0.10,Consumer Discretionary,Japan,JPN,Asia Pacific,JPY,320000000000,Large Cap,Value,0.30,0.16,0.34,0.12,0.04,0.04
+IXUS,International,International Equity,BABA,Alibaba Group Holding Limited,0.08,Consumer Discretionary,China,CHN,Emerging Markets,CNY,190000000000,Large Cap,Growth,0.10,0.10,0.20,0.48,0.06,0.06
+SCHD,North America,US Dividend Equity,HD,Home Depot Inc.,0.09,Consumer Discretionary,United States,USA,North America,USD,380000000000,Large Cap,Value,0.82,0.10,0.03,0.03,0.01,0.01
+SCHD,North America,US Dividend Equity,PEP,PepsiCo Inc.,0.08,Consumer Staples,United States,USA,North America,USD,240000000000,Large Cap,Blend,0.58,0.18,0.10,0.08,0.03,0.03
+SCHD,North America,US Dividend Equity,MRK,Merck & Co. Inc.,0.07,Healthcare,United States,USA,North America,USD,320000000000,Large Cap,Blend,0.50,0.22,0.12,0.10,0.03,0.03

@@ -1,0 +1,14 @@
+stock_ticker,company_name,weight,sector,country,market_cap,style_box
+TSLA,Tesla Inc.,0.12,Consumer Discretionary,United States,550000000000,Growth
+COIN,Coinbase Global Inc.,0.10,Financials,United States,65000000000,Innovation
+ROKU,Roku Inc.,0.09,Communication Services,United States,12000000000,Innovation
+SQ,Block Inc.,0.09,Financials,United States,50000000000,Innovation
+SHOP,Shopify Inc.,0.09,Technology,Canada,110000000000,Innovation
+ZM,Zoom Communications Inc.,0.08,Technology,United States,20000000000,Innovation
+CRSP,CRISPR Therapeutics AG,0.08,Healthcare,Switzerland,6500000000,Innovation
+PATH,UiPath Inc.,0.08,Technology,United States,11000000000,Innovation
+RBLX,Roblox Corporation,0.08,Communication Services,United States,25000000000,Innovation
+U,Unity Software Inc.,0.07,Technology,United States,9000000000,Innovation
+EXAS,Exact Sciences Corporation,0.06,Healthcare,United States,12000000000,Innovation
+TDOC,Teladoc Health Inc.,0.06,Healthcare,United States,3500000000,Innovation
+

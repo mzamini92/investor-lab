@@ -1,0 +1,17 @@
+country_name,country_code,region,currency
+United States,USA,North America,USD
+Canada,CAN,North America,CAD
+United Kingdom,GBR,Europe,GBP
+Germany,DEU,Europe,EUR
+France,FRA,Europe,EUR
+Netherlands,NLD,Europe,EUR
+Switzerland,CHE,Europe,CHF
+Japan,JPN,Asia Pacific,JPY
+China,CHN,Emerging Markets,CNY
+Taiwan,TWN,Emerging Markets,TWD
+India,IND,Emerging Markets,INR
+South Korea,KOR,Asia Pacific,KRW
+Brazil,BRA,Latin America,BRL
+Saudi Arabia,SAU,Middle East & Africa,SAR
+Denmark,DNK,Europe,DKK
+

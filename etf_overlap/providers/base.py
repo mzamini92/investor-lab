@@ -1,0 +1,21 @@
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from collections.abc import Iterable
+
+from etf_overlap.models import ETFHoldings
+
+
+class HoldingsProvider(ABC):
+    """Interface for ETF holdings data sources."""
+
+    @abstractmethod
+    def get_holdings(self, ticker: str) -> ETFHoldings:
+        raise NotImplementedError
+
+    def get_many(self, tickers: Iterable[str]) -> dict[str, ETFHoldings]:
+        return {ticker.upper(): self.get_holdings(ticker) for ticker in tickers}
+
+    @abstractmethod
+    def supported_etfs(self) -> list[str]:
+        raise NotImplementedError

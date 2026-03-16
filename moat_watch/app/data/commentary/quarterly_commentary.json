@@ -1,0 +1,67 @@
+[
+  {
+    "ticker": "SBUX",
+    "quarter": "2025Q2",
+    "raw_commentary_text": "Management described a more promotional environment, softer traffic, and clear price sensitivity in several markets. The team also acknowledged more competitive activity and elevated labor pressure.",
+    "mentions_pricing_pressure": true,
+    "mentions_competition": true,
+    "mentions_promotions": true,
+    "mentions_market_share_gain": false,
+    "mentions_market_share_loss": true,
+    "mentions_customer_weakness": true,
+    "mentions_cost_pressure": true,
+    "mentions_innovation_strength": false
+  },
+  {
+    "ticker": "AAPL",
+    "quarter": "2025Q2",
+    "raw_commentary_text": "Management emphasized resilient demand, a sticky installed base, and disciplined pricing. China commentary was measured, but product loyalty and services momentum remained clear themes.",
+    "mentions_pricing_pressure": false,
+    "mentions_competition": false,
+    "mentions_promotions": false,
+    "mentions_market_share_gain": true,
+    "mentions_market_share_loss": false,
+    "mentions_customer_weakness": false,
+    "mentions_cost_pressure": false,
+    "mentions_innovation_strength": true
+  },
+  {
+    "ticker": "MSFT",
+    "quarter": "2025Q2",
+    "raw_commentary_text": "Management highlighted sustained AI demand, healthy pricing, strong renewal behavior, and continued product innovation. Commentary suggested share gains across several enterprise workloads.",
+    "mentions_pricing_pressure": false,
+    "mentions_competition": false,
+    "mentions_promotions": false,
+    "mentions_market_share_gain": true,
+    "mentions_market_share_loss": false,
+    "mentions_customer_weakness": false,
+    "mentions_cost_pressure": false,
+    "mentions_innovation_strength": true
+  },
+  {
+    "ticker": "NFLX",
+    "quarter": "2025Q2",
+    "raw_commentary_text": "Management described solid engagement, better monetization, and healthier pricing discipline than a year ago. Competitive commentary was calmer and product improvements were framed as helping retention.",
+    "mentions_pricing_pressure": false,
+    "mentions_competition": false,
+    "mentions_promotions": false,
+    "mentions_market_share_gain": true,
+    "mentions_market_share_loss": false,
+    "mentions_customer_weakness": false,
+    "mentions_cost_pressure": false,
+    "mentions_innovation_strength": true
+  },
+  {
+    "ticker": "COST",
+    "quarter": "2025Q2",
+    "raw_commentary_text": "Management emphasized traffic resilience, membership strength, and careful value positioning without heavy promotions. Commentary suggested the company remains disciplined rather than aggressive on price.",
+    "mentions_pricing_pressure": false,
+    "mentions_competition": false,
+    "mentions_promotions": false,
+    "mentions_market_share_gain": true,
+    "mentions_market_share_loss": false,
+    "mentions_customer_weakness": false,
+    "mentions_cost_pressure": true,
+    "mentions_innovation_strength": false
+  }
+]

@@ -1,0 +1,7 @@
+Operator: Welcome to Microsoft's quarterly earnings conference call.
+Satya Nadella (CEO): Cloud demand remained healthy, and customer interest in AI continued to build. We were encouraged by enterprise execution.
+Amy Hood (CFO): We are seeing strong pipeline activity, though monetization timing for some AI services remains early. Margins improved and commercial bookings were healthy.
+Operator: We will now begin the question-and-answer session.
+Analyst: How should we think about AI contribution this year?
+Amy Hood (CFO): We remain optimistic, but it is still early in the adoption curve.
+Operator: This concludes today's call.

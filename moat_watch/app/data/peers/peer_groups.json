@@ -1,0 +1,7 @@
+{
+  "SBUX": ["CMG", "MCD"],
+  "AAPL": ["MSFT", "GOOGL", "META"],
+  "MSFT": ["GOOGL", "ORCL", "CRM"],
+  "NFLX": ["DIS", "SPOT"],
+  "COST": ["WMT", "TGT"]
+}

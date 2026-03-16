@@ -1,0 +1,11 @@
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "quarter": "2025Q4",
+  "earnings_date": "2025-10-30",
+  "revenue_actual": 96.2,
+  "revenue_estimate": 94.8,
+  "eps_actual": 1.69,
+  "eps_estimate": 1.63,
+  "guidance_summary": "Management highlighted services strength but stayed cautious on China and did not raise its broader demand outlook."
+}

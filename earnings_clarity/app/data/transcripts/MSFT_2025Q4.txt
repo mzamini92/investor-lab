@@ -1,0 +1,9 @@
+Operator: Welcome to Microsoft's quarterly earnings conference call.
+Satya Nadella (CEO): We saw durable demand across cloud and AI workloads, and Azure growth continued to improve. Customer demand remains healthy, and our commercial pipeline stayed strong.
+Amy Hood (CFO): We are maintaining a constructive outlook. There are still capacity timing constraints in some AI infrastructure programs, but demand signals remain strong and we continue to expand margins with disciplined opex.
+Operator: We will now begin the question-and-answer session.
+Keith Weiss (Morgan Stanley Analyst): How should investors think about cloud demand if enterprise budgets stay tight?
+Satya Nadella (CEO): We continue to see healthy enterprise demand, and AI workloads are adding to, not replacing, core cloud consumption.
+Brad Reback (Stifel Analyst): Are you seeing any moderation in Azure momentum?
+Amy Hood (CFO): We have normal quarter-to-quarter variability, but we remain confident in the underlying demand picture.
+Operator: This concludes today's call.

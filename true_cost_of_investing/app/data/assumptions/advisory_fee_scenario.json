@@ -1,0 +1,18 @@
+{
+  "monthly_contribution": 500,
+  "annual_gross_return": 0.08,
+  "investment_horizon_years": 30,
+  "account_type": "taxable",
+  "qualified_dividend_tax_rate": 0.15,
+  "ordinary_income_tax_rate": 0.24,
+  "capital_gains_tax_rate": 0.15,
+  "state_tax_rate": 0.05,
+  "annual_advisory_fee": 0.01,
+  "annual_cash_drag": 0.0020,
+  "rebalance_frequency_per_year": 4,
+  "commission_per_trade": 4.95,
+  "slippage_bps": 3,
+  "tax_loss_harvesting_benefit": 0.0005,
+  "contribution_growth_rate": 0.02,
+  "inflation_rate": 0.025
+}

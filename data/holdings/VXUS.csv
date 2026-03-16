@@ -1,0 +1,13 @@
+stock_ticker,company_name,weight,sector,country,market_cap,style_box
+TSM,Taiwan Semiconductor Manufacturing Co. Ltd.,0.12,Technology,Taiwan,700000000000,Blend
+ASML,ASML Holding N.V.,0.10,Technology,Netherlands,420000000000,Growth
+NVO,Novo Nordisk A/S,0.10,Healthcare,Denmark,550000000000,Growth
+SAP,SAP SE,0.09,Technology,Germany,240000000000,Blend
+NESN,Nestle S.A.,0.09,Consumer Staples,Switzerland,310000000000,Value
+TM,Toyota Motor Corporation,0.08,Consumer Discretionary,Japan,320000000000,Value
+SHEL,Shell plc,0.08,Energy,United Kingdom,220000000000,Value
+BABA,Alibaba Group Holding Limited,0.08,Consumer Discretionary,China,190000000000,Growth
+TCEHY,Tencent Holdings Ltd.,0.07,Communication Services,China,430000000000,Growth
+RACE,Ferrari N.V.,0.07,Consumer Discretionary,Italy,75000000000,Growth
+HSBC,HSBC Holdings plc,0.06,Financials,United Kingdom,125000000000,Value
+RIO,Rio Tinto Group,0.06,Materials,United Kingdom,110000000000,Value

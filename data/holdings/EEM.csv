@@ -1,0 +1,10 @@
+stock_ticker,company_name,weight,sector,country,market_cap,style_box
+TSM,Taiwan Semiconductor Manufacturing Co. Ltd.,0.16,Technology,Taiwan,700000000000,Blend
+TCEHY,Tencent Holdings Ltd.,0.14,Communication Services,China,430000000000,Growth
+BABA,Alibaba Group Holding Limited,0.12,Consumer Discretionary,China,190000000000,Growth
+005930.KS,Samsung Electronics Co. Ltd.,0.12,Technology,South Korea,390000000000,Blend
+RELIANCE.NS,Reliance Industries Ltd.,0.10,Energy,India,240000000000,Blend
+INFY,Infosys Ltd.,0.10,Technology,India,80000000000,Growth
+VALE,Vale S.A.,0.10,Materials,Brazil,55000000000,Value
+2222.SR,Saudi Aramco,0.08,Energy,Saudi Arabia,1800000000000,Value
+NPSNY,Naspers Ltd.,0.08,Communication Services,South Africa,40000000000,Growth

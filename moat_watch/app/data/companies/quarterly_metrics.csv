@@ -1,0 +1,36 @@
+ticker,company_name,sector,industry,fiscal_year,fiscal_quarter,quarter_label,revenue,gross_profit,operating_margin,free_cash_flow,invested_capital,roic,estimated_wacc,r_and_d_expense,sales_and_marketing_expense,capex,same_store_sales,units_sold,average_selling_price,revenue_per_unit,volume_growth,price_realization,market_share,inventory_growth,receivables_growth,customer_acquisition_cost,ltv_to_cac
+SBUX,Starbucks Corporation,Consumer Discretionary,Restaurants,2024,2,2024Q2,9.10,2.85,0.160,1.15,19.00,0.170,0.085,0.12,0.42,0.42,0.020,100.0,9.10,9.10,0.010,0.025,0.191,0.020,0.015,,
+SBUX,Starbucks Corporation,Consumer Discretionary,Restaurants,2024,3,2024Q3,9.05,2.79,0.156,1.09,19.20,0.165,0.085,0.12,0.43,0.42,0.010,99.2,9.12,9.12,-0.005,0.022,0.189,0.022,0.018,,
+SBUX,Starbucks Corporation,Consumer Discretionary,Restaurants,2024,4,2024Q4,9.00,2.74,0.151,1.03,19.40,0.160,0.085,0.11,0.43,0.41,-0.010,98.8,9.11,9.11,-0.008,0.020,0.188,0.024,0.019,,
+SBUX,Starbucks Corporation,Consumer Discretionary,Restaurants,2025,1,2025Q1,8.95,2.68,0.146,0.98,19.60,0.154,0.086,0.11,0.44,0.41,-0.020,98.0,9.13,9.13,-0.010,0.018,0.186,0.026,0.020,,
+SBUX,Starbucks Corporation,Consumer Discretionary,Restaurants,2025,2,2025Q2,8.92,2.61,0.139,0.93,19.80,0.147,0.086,0.10,0.45,0.40,-0.030,97.2,9.18,9.18,-0.012,0.015,0.184,0.028,0.021,,
+AAPL,Apple Inc.,Technology,Consumer Electronics,2024,2,2024Q2,90.8,41.3,0.301,24.1,103.0,0.286,0.085,7.4,6.4,2.7,0.000,221.0,411.0,411.0,0.005,0.018,0.229,0.010,0.014,,
+AAPL,Apple Inc.,Technology,Consumer Electronics,2024,3,2024Q3,91.4,41.8,0.304,24.3,104.0,0.288,0.085,7.5,6.4,2.8,0.002,222.0,412.0,412.0,0.006,0.018,0.230,0.010,0.014,,
+AAPL,Apple Inc.,Technology,Consumer Electronics,2024,4,2024Q4,92.2,42.5,0.307,24.6,105.0,0.290,0.085,7.6,6.5,2.8,0.004,223.0,414.0,414.0,0.007,0.019,0.231,0.011,0.015,,
+AAPL,Apple Inc.,Technology,Consumer Electronics,2025,1,2025Q1,93.0,43.0,0.309,24.9,106.0,0.292,0.085,7.7,6.5,2.8,0.006,224.0,416.0,416.0,0.007,0.020,0.232,0.011,0.015,,
+AAPL,Apple Inc.,Technology,Consumer Electronics,2025,2,2025Q2,93.8,43.6,0.311,25.2,107.0,0.294,0.085,7.9,6.6,2.9,0.008,225.0,418.0,418.0,0.008,0.021,0.233,0.011,0.015,,
+MSFT,Microsoft Corporation,Technology,Software,2024,2,2024Q2,61.0,42.0,0.441,23.0,117.0,0.260,0.085,16.2,6.5,7.0,,100.0,1.00,1.00,0.020,0.018,0.222,0.010,0.012,1.20,4.8
+MSFT,Microsoft Corporation,Technology,Software,2024,3,2024Q3,62.5,43.5,0.447,23.8,118.0,0.265,0.085,16.8,6.6,7.1,,101.5,1.01,1.01,0.022,0.020,0.224,0.010,0.012,1.18,5.0
+MSFT,Microsoft Corporation,Technology,Software,2024,4,2024Q4,64.0,45.0,0.452,24.9,119.0,0.270,0.085,17.5,6.7,7.2,,103.0,1.02,1.02,0.023,0.022,0.226,0.011,0.012,1.16,5.2
+MSFT,Microsoft Corporation,Technology,Software,2025,1,2025Q1,66.0,46.8,0.458,26.0,120.0,0.277,0.085,18.3,6.8,7.4,,104.5,1.03,1.03,0.024,0.025,0.229,0.011,0.013,1.14,5.4
+MSFT,Microsoft Corporation,Technology,Software,2025,2,2025Q2,68.5,49.0,0.464,27.6,121.5,0.285,0.085,19.1,6.8,7.6,,106.0,1.04,1.04,0.026,0.028,0.232,0.012,0.013,1.12,5.7
+NFLX,Netflix Inc.,Communication Services,Streaming,2024,2,2024Q2,8.95,3.72,0.240,1.5,34.0,0.130,0.085,1.2,0.95,0.55,,260.0,11.8,11.8,0.010,0.010,0.172,0.008,0.010,0.42,3.8
+NFLX,Netflix Inc.,Communication Services,Streaming,2024,3,2024Q3,9.20,3.88,0.248,1.7,34.2,0.138,0.085,1.25,0.95,0.56,,264.0,12.0,12.0,0.012,0.012,0.174,0.008,0.010,0.41,4.0
+NFLX,Netflix Inc.,Communication Services,Streaming,2024,4,2024Q4,9.55,4.08,0.256,1.9,34.4,0.147,0.085,1.3,0.96,0.57,,268.0,12.2,12.2,0.014,0.015,0.176,0.008,0.010,0.40,4.2
+NFLX,Netflix Inc.,Communication Services,Streaming,2025,1,2025Q1,9.95,4.31,0.265,2.1,34.8,0.158,0.085,1.35,0.96,0.58,,273.0,12.4,12.4,0.016,0.017,0.178,0.009,0.010,0.39,4.4
+NFLX,Netflix Inc.,Communication Services,Streaming,2025,2,2025Q2,10.35,4.57,0.274,2.35,35.1,0.170,0.085,1.42,0.97,0.60,,279.0,12.7,12.7,0.019,0.020,0.181,0.009,0.011,0.38,4.7
+COST,Costco Wholesale Corporation,Consumer Staples,Discount Stores,2024,2,2024Q2,58.5,7.34,0.038,1.4,29.0,0.175,0.085,0.20,0.58,0.90,0.040,100.0,1.00,1.00,0.030,0.010,0.211,0.010,0.012,,
+COST,Costco Wholesale Corporation,Consumer Staples,Discount Stores,2024,3,2024Q3,59.6,7.50,0.039,1.45,29.2,0.177,0.085,0.21,0.58,0.91,0.042,101.5,1.01,1.01,0.031,0.010,0.212,0.010,0.012,,
+COST,Costco Wholesale Corporation,Consumer Staples,Discount Stores,2024,4,2024Q4,60.4,7.63,0.040,1.52,29.4,0.179,0.085,0.21,0.59,0.92,0.045,102.0,1.01,1.01,0.032,0.011,0.213,0.010,0.012,,
+COST,Costco Wholesale Corporation,Consumer Staples,Discount Stores,2025,1,2025Q1,61.3,7.78,0.041,1.58,29.6,0.181,0.085,0.22,0.59,0.94,0.046,103.0,1.02,1.02,0.033,0.011,0.214,0.010,0.012,,
+COST,Costco Wholesale Corporation,Consumer Staples,Discount Stores,2025,2,2025Q2,62.4,8.05,0.042,1.66,29.8,0.184,0.085,0.22,0.60,0.96,0.048,104.5,1.03,1.03,0.034,0.012,0.216,0.011,0.012,,
+CMG,Chipotle Mexican Grill,Consumer Discretionary,Restaurants,2025,2,2025Q2,3.2,0.84,0.175,0.48,6.8,0.205,0.085,0.03,0.11,0.18,0.035,101.0,31.7,31.7,0.015,0.020,0.126,0.020,0.016,,
+MCD,McDonald's Corporation,Consumer Discretionary,Restaurants,2025,2,2025Q2,6.7,3.8,0.461,2.1,45.0,0.150,0.085,0.04,0.15,0.50,0.010,99.0,67.7,67.7,-0.002,0.017,0.198,0.018,0.013,,
+GOOGL,Alphabet Inc.,Communication Services,Internet Content,2025,2,2025Q2,85.0,49.3,0.332,23.0,150.0,0.210,0.085,12.7,6.0,12.0,,104.0,1.02,1.02,0.018,0.015,0.205,0.010,0.012,1.30,4.8
+META,Meta Platforms Inc.,Communication Services,Internet Content,2025,2,2025Q2,40.0,32.8,0.385,15.8,72.0,0.255,0.085,10.0,4.8,8.8,,103.0,1.03,1.03,0.020,0.013,0.199,0.011,0.012,1.10,5.1
+ORCL,Oracle Corporation,Technology,Software,2025,2,2025Q2,14.8,10.5,0.325,4.1,67.0,0.165,0.085,2.3,1.6,1.7,,101.0,1.01,1.01,0.010,0.012,0.145,0.010,0.011,1.30,4.1
+CRM,Salesforce Inc.,Technology,Software,2025,2,2025Q2,9.7,7.3,0.210,2.5,54.0,0.142,0.085,1.6,3.0,0.7,,100.5,1.00,1.00,0.008,0.010,0.134,0.010,0.011,1.25,3.9
+DIS,The Walt Disney Company,Communication Services,Entertainment,2025,2,2025Q2,23.0,8.4,0.170,1.8,95.0,0.095,0.085,1.3,1.1,1.4,,255.0,10.5,10.5,0.004,0.005,0.169,0.009,0.010,0.60,3.4
+SPOT,Spotify Technology,Communication Services,Streaming Audio,2025,2,2025Q2,4.2,1.2,0.120,0.4,9.5,0.110,0.085,0.55,0.75,0.15,,274.0,15.3,15.3,0.015,0.018,0.102,0.010,0.011,0.32,3.3
+WMT,Walmart Inc.,Consumer Staples,Discount Stores,2025,2,2025Q2,168.0,41.0,0.061,5.3,88.0,0.145,0.085,0.62,6.1,5.1,0.041,101.5,1.00,1.00,0.025,0.008,0.228,0.011,0.012,,
+TGT,Target Corporation,Consumer Staples,Discount Stores,2025,2,2025Q2,25.0,6.8,0.052,1.2,31.0,0.120,0.085,0.18,1.3,0.8,0.015,98.5,0.99,0.99,-0.005,0.005,0.168,0.014,0.015,,

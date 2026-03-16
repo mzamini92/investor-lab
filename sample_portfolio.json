@@ -1,0 +1,10 @@
+[
+  {"ticker": "VTI", "amount": 1750},
+  {"ticker": "VOO", "amount": 1250},
+  {"ticker": "QQQ", "amount": 900},
+  {"ticker": "ARKK", "amount": 350},
+  {"ticker": "VXUS", "amount": 1250},
+  {"ticker": "EEM", "amount": 500},
+  {"ticker": "IXUS", "amount": 900},
+  {"ticker": "SCHD", "amount": 700}
+]

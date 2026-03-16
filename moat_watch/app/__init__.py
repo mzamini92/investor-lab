@@ -1,0 +1,1 @@
+"""MoatWatch application package."""

@@ -1,0 +1,9 @@
+Operator: Good afternoon, and welcome to Apple's fiscal fourth quarter earnings call.
+Tim Cook (CEO): We delivered revenue above our expectations, with services revenue reaching another record and installed base growth remaining healthy. At the same time, we saw mixed demand in Greater China and we remain cautious on the pace of hardware recovery there.
+Kevan Parekh (CFO): Gross margin was solid, but we are seeing some margin pressure from product mix and foreign exchange. Looking ahead, we are not assuming a broad-based demand reacceleration, and visibility remains limited in a few international markets.
+Operator: We will now begin the question-and-answer session.
+Erik Woodring (Morgan Stanley Analyst): Tim, you mentioned mixed demand in China. Has your confidence changed at all versus three months ago?
+Tim Cook (CEO): We are watching closely. It would be premature to say conditions have fully improved, and we would not extrapolate from one quarter.
+Toni Sacconaghi (Bernstein Analyst): Should investors think services strength can offset softer hardware if China remains pressured?
+Kevan Parekh (CFO): Services remains strong, but we are not assuming that one segment fully offsets every headwind. We remain focused on execution and the installed base.
+Operator: This concludes today's call.

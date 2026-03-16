@@ -1,0 +1,11 @@
+{
+  "ticker": "AAPL",
+  "company_name": "Apple Inc.",
+  "quarter": "2025Q3",
+  "earnings_date": "2025-07-31",
+  "revenue_actual": 91.4,
+  "revenue_estimate": 90.1,
+  "eps_actual": 1.55,
+  "eps_estimate": 1.50,
+  "guidance_summary": "Management said demand was stabilizing and sounded more confident about the product cycle than it did this quarter."
+}
