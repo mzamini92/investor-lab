@@ -1,0 +1,5 @@
+[
+  {"ticker": "VTI", "quantity": 120, "price": 285.0},
+  {"ticker": "QQQ", "quantity": 20, "price": 515.0},
+  {"ticker": "AAPL", "quantity": 10, "price": 214.0}
+]

@@ -12,6 +12,7 @@ It started as an ETF overlap tool and now includes a broader suite for:
 
 - ETF overlap and false-diversification detection
 - global exposure mapping
+- global home-bias and international diversification gap analysis
 - economic dependency and macro-driver analysis
 - earnings-call clarity summaries
 - long-horizon investing cost analysis
@@ -41,6 +42,7 @@ Each major feature has its own markdown documentation:
 - EarningsClarity: [earnings_clarity/README.md](/Users/uw-user/Desktop/start/earnings_clarity/README.md)
 - True Cost of Investing: [true_cost_of_investing/README.md](/Users/uw-user/Desktop/start/true_cost_of_investing/README.md)
 - Economic Regime Translator: [economic_regime_translator/README.md](/Users/uw-user/Desktop/start/economic_regime_translator/README.md)
+- GlobalGap: [globalgap/README.md](/Users/uw-user/Desktop/start/globalgap/README.md)
 - ValueCheck: [value_check/README.md](/Users/uw-user/Desktop/start/value_check/README.md)
 - MoatWatch: [moat_watch/README.md](/Users/uw-user/Desktop/start/moat_watch/README.md)
 - HarvestAlert: [harvest_alert/README.md](/Users/uw-user/Desktop/start/harvest_alert/README.md)
@@ -56,7 +58,7 @@ pip install '.[dev]'
 streamlit run streamlit_app.py
 ```
 
-The dashboard currently includes ten tabs:
+The dashboard currently includes eleven tabs:
 
 1. `Overlap Detector`
 2. `Global Exposure Map`
@@ -65,9 +67,10 @@ The dashboard currently includes ten tabs:
 5. `EarningsClarity`
 6. `True Cost of Investing`
 7. `Economic Regime Translator`
-8. `ValueCheck`
-9. `MoatWatch`
-10. `HarvestAlert`
+8. `GlobalGap`
+9. `ValueCheck`
+10. `MoatWatch`
+11. `HarvestAlert`
 
 The app supports sample-mode workflows plus JSON upload or paste flows for the feature areas that use user-provided inputs.
 
@@ -111,6 +114,7 @@ python hedgefund_dependency_engine/main.py --portfolio hedgefund_dependency_engi
 python earnings_clarity/main.py analyze-portfolio --holdings earnings_clarity/app/data/holdings/sample_holdings.json --quarter 2025Q4
 python true_cost_of_investing/main.py analyze --portfolio true_cost_of_investing/app/data/portfolios/sample_high_fee_portfolio.json --assumptions true_cost_of_investing/app/data/assumptions/taxable_account.json
 python economic_regime_translator/main.py classify --snapshot economic_regime_translator/app/data/samples/current_snapshot.json --history economic_regime_translator/app/data/historical/historical_macro.csv --with-analogs
+python globalgap/main.py analyze --portfolio globalgap/sample_portfolio.json --pretty
 python value_check/main.py check --ticker MSFT
 python moat_watch/main.py analyze --ticker SBUX --quarter 2025Q2 --pretty
 python harvest_alert/main.py scan --pretty
@@ -129,6 +133,7 @@ Top-level structure:
 - [earnings_clarity](/Users/uw-user/Desktop/start/earnings_clarity): plain-English quarterly earnings interpretation
 - [true_cost_of_investing](/Users/uw-user/Desktop/start/true_cost_of_investing): long-term fee, tax drag, and friction-cost modeling
 - [economic_regime_translator](/Users/uw-user/Desktop/start/economic_regime_translator): macro snapshot classification and historical analogs
+- [globalgap](/Users/uw-user/Desktop/start/globalgap): US-versus-international valuation, dollar-cycle, and diversification-gap analysis
 - [value_check](/Users/uw-user/Desktop/start/value_check): stock and ETF valuation context
 - [moat_watch](/Users/uw-user/Desktop/start/moat_watch): moat-health monitoring and peer-relative competitive-strength tracking
 - [harvest_alert](/Users/uw-user/Desktop/start/harvest_alert): tax-loss harvesting scanner with wash-sale checks and replacement suggestions

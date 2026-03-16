@@ -55,6 +55,16 @@ from global_etf_exposure_map.app.services.visualization import (
     plot_region_exposure,
     plot_world_choropleth,
 )
+from globalgap.app.analyzer import GlobalGapAnalyzer
+from globalgap.app.config import SAMPLE_PORTFOLIO_FILE as GLOBALGAP_SAMPLE_PORTFOLIO_FILE
+from globalgap.app.models import PortfolioPosition as GlobalGapPortfolioPosition
+from globalgap.app.visualization import (
+    build_analog_bar_chart as build_globalgap_analog_bar_chart,
+    build_dollar_cycle_chart as build_globalgap_dollar_cycle_chart,
+    build_exposure_pie as build_globalgap_exposure_pie,
+    build_simulation_chart as build_globalgap_simulation_chart,
+    build_valuation_history_chart as build_globalgap_valuation_history_chart,
+)
 from hedgefund_dependency_engine.app.config import DEFAULT_DYNAMIC_EVENTS
 from hedgefund_dependency_engine.app.config import DEFAULT_SAMPLE_PORTFOLIO as DEFAULT_HF_SAMPLE_PORTFOLIO
 from hedgefund_dependency_engine.app.config import ETF_HOLDINGS_DIR as HF_HOLDINGS_DIR
@@ -866,6 +876,68 @@ def _render_harvest_summary_cards(result: dict[str, Any]) -> None:
         )
 
 
+def _render_globalgap_viral_card(result: dict[str, Any]) -> None:
+    recommendation = result["recommendation"]
+    valuation = result["valuation_gap"]
+    dollar = result["dollar_cycle"]
+    st.markdown(
+        f"""
+        <div class="viral-card">
+            <div class="viral-kicker">GlobalGap</div>
+            <div class="viral-title">{recommendation['headline']}</div>
+            <div class="viral-copy">
+                International equities trade at a <strong>{float(valuation['international_discount_pct']):.1f}% discount</strong>
+                to US equities, while the dollar is in a <strong>{str(dollar['regime']).replace('_', ' ').title()}</strong> regime.
+                <br><br>
+                {recommendation['plain_english_note']}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def _render_globalgap_summary_cards(result: dict[str, Any]) -> None:
+    exposure = result["portfolio_exposure"]
+    valuation = result["valuation_gap"]
+    analogs = result["historical_analogs"]
+    simulation = result["simulation"]
+    cards = [
+        (
+            "US Weight",
+            f"{float(exposure['portfolio_us_weight']) * 100:.0f}%",
+            exposure["home_bias_level"],
+        ),
+        (
+            "Intl Discount",
+            f"{float(valuation['international_discount_pct']):.1f}%",
+            "Current discount of international equities versus US forward P/E.",
+        ),
+        (
+            "Analog Outcome",
+            f"{float(analogs['average_following_5y_outperformance_pct']):.1f}%",
+            "Average annualized international outperformance after similar spreads.",
+        ),
+        (
+            "Sharpe Change",
+            f"{float(simulation['sharpe_ratio_change']):+.2f}",
+            "Historical change in risk-adjusted return for the diversified mix.",
+        ),
+    ]
+    columns = st.columns(4)
+    for column, (label, value, copy) in zip(columns, cards):
+        column.markdown(
+            f"""
+            <div class="summary-card">
+                <div class="summary-label">{label}</div>
+                <div class="summary-value">{value}</div>
+                <div class="summary-copy">{copy}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+
 def _figure_download_button(label: str, figure: go.Figure, file_name: str, key: str) -> None:
     html = figure.to_html(include_plotlyjs="cdn", full_html=True)
     st.download_button(
@@ -982,6 +1054,7 @@ harvest_analyzer = HarvestAlertAnalyzer(harvest_provider)
 moatwatch_analyzer = MoatWatchAnalyzer()
 moatwatch_provider = LocalMoatProvider()
 moatwatch_supported = moatwatch_provider.supported_tickers()
+globalgap_analyzer = GlobalGapAnalyzer()
 valuecheck_analyzer = ValueCheckAnalyzer()
 valuecheck_provider = LocalValuationProvider()
 valuecheck_supported = valuecheck_provider.supported_tickers()
@@ -1008,7 +1081,7 @@ with st.sidebar:
     )
     st.write("Best for screenshots: run the dependency or investing-cost tabs after selecting a sample portfolio.")
 
-overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_tab, valuecheck_tab, moatwatch_tab, harvest_tab = st.tabs(
+overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_tab, globalgap_tab, valuecheck_tab, moatwatch_tab, harvest_tab = st.tabs(
     [
         "Overlap Detector",
         "Global Exposure Map",
@@ -1017,6 +1090,7 @@ overlap_tab, global_tab, dependency_tab, hf_tab, earnings_tab, cost_tab, regime_
         "EarningsClarity",
         "True Cost of Investing",
         "Economic Regime Translator",
+        "GlobalGap",
         "ValueCheck",
         "MoatWatch",
         "HarvestAlert",
@@ -1999,6 +2073,129 @@ with regime_tab:
                 st.write(regime_comparison["transition_summary"])
                 st.plotly_chart(transition_figure, use_container_width=True)
                 st.dataframe(pd.DataFrame(regime_comparison["changed_indicators"]), use_container_width=True)
+
+with globalgap_tab:
+    st.subheader("GlobalGap")
+    st.caption("Reveal the valuation, currency, and earnings-growth gap between a US-heavy portfolio and a more globally diversified one.")
+    globalgap_upload = _json_upload_widget(
+        "Upload GlobalGap portfolio JSON",
+        "globalgap_portfolio",
+        "Upload a JSON array like [{\"ticker\": \"VTI\", \"quantity\": 120, \"price\": 285.0}].",
+    )
+    globalgap_default = Path(GLOBALGAP_SAMPLE_PORTFOLIO_FILE).read_text(encoding="utf-8")
+    with st.form("globalgap_form"):
+        globalgap_input = st.text_area(
+            "Portfolio JSON",
+            value=globalgap_upload or globalgap_default,
+            height=220,
+        )
+        globalgap_submit = st.form_submit_button("Run GlobalGap")
+
+    if globalgap_submit:
+        try:
+            globalgap_payload = _parse_portfolio(globalgap_input)
+            analysis_model = globalgap_analyzer.analyze([GlobalGapPortfolioPosition(**item) for item in globalgap_payload])
+            globalgap_result = analysis_model.model_dump()
+        except Exception as exc:  # noqa: BLE001
+            st.error(f"Unable to run GlobalGap: {exc}")
+        else:
+            _render_globalgap_viral_card(globalgap_result)
+            _render_globalgap_summary_cards(globalgap_result)
+
+            exposure_figure = build_globalgap_exposure_pie(analysis_model)
+            valuation_figure = build_globalgap_valuation_history_chart(analysis_model)
+            dollar_figure = build_globalgap_dollar_cycle_chart(analysis_model)
+            analog_figure = build_globalgap_analog_bar_chart(analysis_model)
+            simulation_figure = build_globalgap_simulation_chart(analysis_model)
+
+            st.markdown('<div class="section-kicker">Shareable Exports</div>', unsafe_allow_html=True)
+            export_col1, export_col2, export_col3 = st.columns(3)
+            with export_col1:
+                _result_download_buttons(
+                    globalgap_result,
+                    {
+                        "globalgap_exposure": exposure_figure,
+                        "globalgap_valuation": valuation_figure,
+                    },
+                    "globalgap",
+                )
+            with export_col2:
+                _figure_download_button(
+                    "Download dollar-cycle chart",
+                    dollar_figure,
+                    "globalgap_dollar_cycle.html",
+                    "globalgap_dollar_export",
+                )
+                _figure_download_button(
+                    "Download analog chart",
+                    analog_figure,
+                    "globalgap_analogs.html",
+                    "globalgap_analog_export",
+                )
+            with export_col3:
+                _figure_download_button(
+                    "Download simulation chart",
+                    simulation_figure,
+                    "globalgap_simulation.html",
+                    "globalgap_simulation_export",
+                )
+                st.download_button(
+                    "Download full GlobalGap JSON",
+                    data=json.dumps(globalgap_result, indent=2),
+                    file_name="globalgap_analysis.json",
+                    mime="application/json",
+                    key="globalgap_json_export",
+                )
+
+            st.plotly_chart(exposure_figure, use_container_width=True)
+            chart_col1, chart_col2 = st.columns(2)
+            with chart_col1:
+                st.plotly_chart(valuation_figure, use_container_width=True)
+            with chart_col2:
+                st.plotly_chart(dollar_figure, use_container_width=True)
+            chart_col3, chart_col4 = st.columns(2)
+            with chart_col3:
+                st.plotly_chart(analog_figure, use_container_width=True)
+            with chart_col4:
+                st.plotly_chart(simulation_figure, use_container_width=True)
+
+            st.subheader("Plain-English Readout")
+            st.write(globalgap_result["recommendation"]["plain_english_note"])
+            st.write(globalgap_result["recommendation"]["diversification_benefit_note"])
+
+            explain_col1, explain_col2 = st.columns(2)
+            with explain_col1:
+                st.subheader("Macro Setup")
+                st.write(f"- {globalgap_result['valuation_gap']['narrative']}")
+                st.write(f"- {globalgap_result['earnings_growth_gap']['narrative']}")
+                st.write(f"- {globalgap_result['dollar_cycle']['narrative']}")
+            with explain_col2:
+                st.subheader("Suggested Adjustment")
+                adjustment = globalgap_result["recommendation"]["suggested_adjustment"]
+                st.write(
+                    f"- Current international weight: {float(adjustment['current_international_weight']) * 100:.1f}%"
+                )
+                st.write(
+                    f"- Suggested international weight: {float(adjustment['suggested_international_weight']) * 100:.1f}%"
+                )
+                st.write(f"- Example vehicles: {', '.join(adjustment['suggested_vehicle_examples'])}")
+                st.write(f"- Rationale: {adjustment['rationale']}")
+
+            globalgap_tabs = st.tabs(["Holdings", "Historical Analogs", "Simulation"])
+            with globalgap_tabs[0]:
+                st.dataframe(pd.DataFrame(globalgap_result["portfolio_exposure"]["holdings"]), use_container_width=True)
+            with globalgap_tabs[1]:
+                st.dataframe(pd.DataFrame(globalgap_result["historical_analogs"]["analogs"]), use_container_width=True)
+            with globalgap_tabs[2]:
+                st.dataframe(
+                    pd.DataFrame(
+                        [
+                            globalgap_result["simulation"]["current_portfolio"],
+                            globalgap_result["simulation"]["diversified_portfolio"],
+                        ]
+                    ),
+                    use_container_width=True,
+                )
 
 with valuecheck_tab:
     st.subheader("ValueCheck")
