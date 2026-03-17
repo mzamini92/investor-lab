@@ -6,6 +6,26 @@
 > If this project saves you research time or helps you invest more clearly, please consider starring it on GitHub:
 > [github.com/mzamini92/investor-lab](https://github.com/mzamini92/investor-lab)
 
+
+## Important Disclaimer
+
+This repository is for research, experimentation, and educational use only.
+
+Nothing in this project, should be treated as financial advice, investment advice, legal advice, tax advice, brokerage advice, or a solicitation to buy or sell any security.
+
+Model outputs may be incomplete, noisy, stale, overfit, wrong, or misleading. The models are not guaranteed to be accurate, robust, or suitable for real-money decisions. Historical backtests and walk-forward results do not guarantee future performance.
+
+You are solely responsible for any decisions made using this repository or its outputs.
+
+By using this project, you acknowledge and agree that:
+
+- all information is provided `as is` without warranties of any kind
+- the authors and contributors assume no fiduciary duty to users
+- the authors and contributors are not responsible or liable for any losses, damages, claims, legal consequences, trading losses, tax consequences, or other harms arising from use of this repository
+
+Always do your own due diligence and consult a licensed financial, legal, and tax professional before making real investment decisions.
+
+
 This repository is a multi-product fintech analytics workspace built around a shared Streamlit dashboard and a set of standalone Python MVPs.
 
 It started as an ETF overlap tool and now includes a broader suite for:
