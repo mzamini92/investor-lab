@@ -23,7 +23,7 @@ By using this project, you acknowledge and agree that:
 - the authors and contributors assume no fiduciary duty to users
 - the authors and contributors are not responsible or liable for any losses, damages, claims, legal consequences, trading losses, tax consequences, or other harms arising from use of this repository
 
-Always do your own due diligence and consult a licensed financial, legal, and tax professional before making real investment decisions.
+Always do your own due diligence and consult a licensed financial, legal, and tax professional before making real investment decisions. IT IS ONLY FOR RESEARCH NOTHING MORE.
 
 
 This repository is a multi-product fintech analytics workspace built around a shared Streamlit dashboard and a set of standalone Python MVPs.
